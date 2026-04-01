@@ -30,12 +30,13 @@ from ml.serializers import MLBackendSerializer
 from projects.functions.next_task import get_next_task
 from projects.functions.stream_history import get_label_stream_history
 from projects.functions.utils import recalculate_created_annotations_and_labels_from_scratch
-from projects.models import Project, ProjectImport, ProjectManager, ProjectReimport, ProjectSummary
+from projects.models import Project, ProjectImport, ProjectManager, ProjectMember, ProjectReimport, ProjectSummary
 from projects.serializers import (
     GetFieldsSerializer,
     ProjectCountsSerializer,
     ProjectImportSerializer,
     ProjectLabelConfigSerializer,
+    ProjectMembershipSerializer,
     ProjectModelVersionExtendedSerializer,
     ProjectModelVersionParamsSerializer,
     ProjectReimportSerializer,
@@ -419,6 +420,67 @@ class ProjectAPI(generics.RetrieveUpdateDestroyAPIView):
     @api_webhook(WebhookAction.PROJECT_UPDATED)
     def put(self, request, *args, **kwargs):
         return super(ProjectAPI, self).put(request, *args, **kwargs)
+
+
+class ProjectMembershipListAPI(generics.ListCreateAPIView):
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    serializer_class = ProjectMembershipSerializer
+    permission_required = ViewClassPermission(
+        GET=all_permissions.projects_view,
+        POST=all_permissions.projects_change,
+    )
+
+    def get_project(self):
+        if not hasattr(self, '_project'):
+            self._project = generics.get_object_or_404(
+                Project.objects.filter(organization=self.request.user.active_organization),
+                pk=self.kwargs['pk'],
+            )
+        return self._project
+
+    def get_queryset(self):
+        return ProjectMember.objects.filter(project=self.get_project()).select_related('user').order_by('id')
+
+    def get_serializer_context(self):
+        return {
+            **super().get_serializer_context(),
+            'project': self.get_project(),
+        }
+
+
+class ProjectMembershipDetailAPI(generics.RetrieveUpdateDestroyAPIView):
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    serializer_class = ProjectMembershipSerializer
+    permission_required = ViewClassPermission(
+        GET=all_permissions.projects_view,
+        PATCH=all_permissions.projects_change,
+        PUT=all_permissions.projects_change,
+        DELETE=all_permissions.projects_change,
+    )
+
+    def get_project(self):
+        if not hasattr(self, '_project'):
+            self._project = generics.get_object_or_404(
+                Project.objects.filter(organization=self.request.user.active_organization),
+                pk=self.kwargs['pk'],
+            )
+        return self._project
+
+    def get_queryset(self):
+        return ProjectMember.objects.filter(project=self.get_project()).select_related('user').order_by('id')
+
+    def get_serializer_context(self):
+        return {
+            **super().get_serializer_context(),
+            'project': self.get_project(),
+        }
+
+    def get_object(self):
+        obj = self.get_queryset().filter(user_id=self.kwargs['user_pk']).first()
+        if obj is None:
+            raise NotFound('项目成员不存在')
+        self.check_object_permissions(self.request, self.get_project())
+        return obj
 
 
 # @method_decorator(

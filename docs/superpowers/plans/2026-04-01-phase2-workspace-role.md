@@ -44,11 +44,11 @@ Expected: `3 passed`
 - Create: `label_studio/projects/migrations/<new>.py`
 - Test: `label_studio/projects/tests/test_project_member_roles.py`
 
-- [ ] **Step 1: 写失败测试（角色默认值/更新/查询）**
-- [ ] **Step 2: 运行失败测试**
-- [ ] **Step 3: 实现 role 字段与 API 更新**
-- [ ] **Step 4: 运行测试通过**
-- [ ] **Step 5: 回归已有项目接口测试**
+- [x] **Step 1: 写失败测试（角色默认值/更新/查询）**
+- [x] **Step 2: 运行失败测试**
+- [x] **Step 3: 实现 role 字段与 API 更新**
+- [x] **Step 4: 运行测试通过**
+- [x] **Step 5: 回归已有项目接口测试**
 
 ### Task 3: 角色权限收口（下一步）
 

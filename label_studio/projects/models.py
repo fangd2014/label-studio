@@ -1409,10 +1409,21 @@ class LabelStreamHistory(models.Model):
 
 
 class ProjectMember(models.Model):
+    class Role(models.TextChoices):
+        ANNOTATOR = 'annotator', _('Annotator')
+        REVIEWER = 'reviewer', _('Reviewer')
+        MANAGER = 'manager', _('Manager')
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='project_memberships', help_text='User ID'
     )
     project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='members', help_text='Project ID')
+    role = models.CharField(
+        max_length=32,
+        choices=Role.choices,
+        default=Role.ANNOTATOR,
+        help_text='Project member role',
+    )
     enabled = models.BooleanField(default=True, help_text='Project member is enabled')
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)

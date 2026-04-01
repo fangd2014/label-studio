@@ -7,6 +7,7 @@ from constants import SAFE_HTML_ATTRIBUTES, SAFE_HTML_TAGS
 from django.db.models import Q
 from drf_spectacular.utils import extend_schema_field, extend_schema_serializer
 from fsm.serializer_fields import FSMStateField
+from organizations.models import OrganizationMember
 from label_studio_sdk.label_interface import LabelInterface
 from label_studio_sdk.label_interface.control_tags import (
     BrushLabelsTag,
@@ -31,11 +32,12 @@ from label_studio_sdk.label_interface.control_tags import (
     TimeSeriesLabelsTag,
     VideoRectangleTag,
 )
-from projects.models import Project, ProjectImport, ProjectOnboarding, ProjectReimport, ProjectSummary
+from projects.models import Project, ProjectImport, ProjectMember, ProjectOnboarding, ProjectReimport, ProjectSummary
 from rest_flex_fields import FlexFieldsModelSerializer
 from rest_framework import serializers
 from rest_framework.serializers import SerializerMethodField
 from tasks.models import Task
+from users.models import User
 from users.serializers import UserSimpleSerializer
 
 
@@ -401,6 +403,54 @@ class ProjectCountsSerializer(ProjectSerializer):
             'ground_truth_number',
             'skipped_annotations_number',
         ]
+
+
+class ProjectMembershipSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.none())
+
+    class Meta:
+        model = ProjectMember
+        fields = [
+            'id',
+            'project',
+            'user',
+            'role',
+            'enabled',
+            'created_at',
+            'updated_at',
+        ]
+        read_only_fields = ['project', 'created_at', 'updated_at']
+
+    def get_fields(self):
+        fields = super().get_fields()
+        fields['user'].queryset = self._allowed_users_queryset()
+        return fields
+
+    def _allowed_users_queryset(self):
+        project = self.context.get('project')
+        if project is None:
+            return User.objects.none()
+        return User.objects.filter(
+            om_through__organization=project.organization,
+            om_through__deleted_at__isnull=True,
+        ).distinct()
+
+    def validate_user(self, value):
+        project = self.context.get('project')
+        if project is None:
+            return value
+        is_org_member = OrganizationMember.objects.filter(
+            user=value,
+            organization=project.organization,
+            deleted_at__isnull=True,
+        ).exists()
+        if not is_org_member:
+            raise serializers.ValidationError('用户必须属于当前组织')
+        return value
+
+    def create(self, validated_data):
+        project = self.context['project']
+        return ProjectMember.objects.create(project=project, **validated_data)
 
 
 class ProjectOnboardingSerializer(serializers.ModelSerializer):
