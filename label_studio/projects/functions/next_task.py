@@ -9,11 +9,32 @@ from django.conf import settings
 from django.db.models import Case, Count, Exists, F, Max, OuterRef, Q, QuerySet, When
 from django.db.models.fields import DecimalField
 from projects.functions.stream_history import add_stream_history
-from projects.models import Project
+from projects.models import Project, ProjectMember
 from tasks.models import Annotation, Task
 from users.models import User
 
 logger = logging.getLogger(__name__)
+
+
+def get_user_project_role(user: User, project: Project) -> str | None:
+    """Resolve project member role for user. Returns None when no explicit membership exists."""
+    return (
+        ProjectMember.objects.filter(user=user, project=project, enabled=True).values_list('role', flat=True).first()
+    )
+
+
+def is_user_project_annotator(user: User, project: Project) -> bool:
+    role = get_user_project_role(user, project)
+    if role is None:
+        return user.is_project_annotator(project)
+    return role == ProjectMember.Role.ANNOTATOR
+
+
+def is_user_restricted_project_role(user: User, project: Project) -> bool:
+    role = get_user_project_role(user, project)
+    if role is None:
+        return getattr(user, 'is_annotator', False) or getattr(user, 'is_reviewer', False)
+    return role in {ProjectMember.Role.ANNOTATOR, ProjectMember.Role.REVIEWER}
 
 
 # Hook for GT-first gating (Enterprise can override via settings)
@@ -201,7 +222,7 @@ def get_not_solved_tasks_qs(
             lse_project
             and lse_project.agreement_threshold is not None
             and get_tasks_agreement_queryset
-            and user.is_project_annotator(project)
+            and is_user_project_annotator(user, project)
         ):
             qs = get_tasks_agreement_queryset(not_solved_tasks)
             qs = qs.annotate(annotators=Count('annotations__completed_by', distinct=True))
@@ -244,7 +265,7 @@ def get_not_solved_tasks_qs(
     # so users can see their work and understand why they can't submit
     if flag_set('fflag_feat_all_fit_1304_strict_overlap', user=user) and not assigned_flag:
         lse_project = getattr(project, 'lse_project', None)
-        is_restricted_role = getattr(user, 'is_annotator', False) or getattr(user, 'is_reviewer', False)
+        is_restricted_role = is_user_restricted_project_role(user, project)
         if lse_project and getattr(lse_project, 'strict_task_overlap', False) and is_restricted_role:
             # Calculate effective overlap limit
             # When agreement_threshold is set, allow additional annotators up to max_additional_annotators_assignable

@@ -1,7 +1,7 @@
 """This file and its contents are licensed under the Apache License 2.0. Please see the included NOTICE for copyright information and LICENSE for a copy of the license."""
 
 import logging  # noqa: I001
-from typing import Optional
+from typing import Any, Optional
 
 from pydantic import BaseModel, ConfigDict
 
@@ -62,6 +62,68 @@ class AllPermissions(BaseModel):
 
 
 all_permissions = AllPermissions()
+
+PROJECT_ROLE_ANNOTATOR = 'annotator'
+PROJECT_ROLE_REVIEWER = 'reviewer'
+PROJECT_ROLE_MANAGER = 'manager'
+
+PROJECT_ROLE_MANAGER_ONLY_PERMISSIONS = frozenset(
+    {
+        all_permissions.projects_create,
+        all_permissions.projects_change,
+        all_permissions.projects_delete,
+        all_permissions.projects_reset_cache,
+        all_permissions.tasks_create,
+        all_permissions.tasks_change,
+        all_permissions.tasks_delete,
+        all_permissions.views_create,
+        all_permissions.views_change,
+        all_permissions.views_delete,
+        all_permissions.views_reset,
+        all_permissions.labels_create,
+        all_permissions.labels_change,
+        all_permissions.labels_delete,
+        all_permissions.models_create,
+        all_permissions.models_change,
+        all_permissions.models_delete,
+        all_permissions.storages_change,
+        all_permissions.storages_sync,
+        all_permissions.webhooks_change,
+    }
+)
+
+
+def get_view_permission_required(view: Any, method: str) -> Optional[str]:
+    """Resolve the permission code configured on a view for the current HTTP method."""
+    permission_required = getattr(view, 'permission_required', None)
+    if permission_required is None:
+        return None
+
+    if isinstance(permission_required, str):
+        return permission_required
+
+    if isinstance(permission_required, ViewClassPermission):
+        return getattr(permission_required, method, None)
+
+    if hasattr(permission_required, method):
+        return getattr(permission_required, method)
+
+    return None
+
+
+def project_role_allows_permission(role: Optional[str], permission: Optional[str]) -> bool:
+    """Check if a project role allows a given permission code."""
+    if permission is None:
+        return True
+
+    if role == PROJECT_ROLE_MANAGER:
+        return True
+
+    if role in {PROJECT_ROLE_ANNOTATOR, PROJECT_ROLE_REVIEWER}:
+        return permission not in PROJECT_ROLE_MANAGER_ONLY_PERMISSIONS
+
+    # Backward-compatible fallback when no project role is assigned.
+    return True
 
 
 class ViewClassPermission(BaseModel):

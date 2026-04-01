@@ -58,9 +58,9 @@ Expected: `3 passed`
 - Modify: `label_studio/core/api_permissions.py`
 - Test: `label_studio/projects/tests/test_role_permissions.py`
 
-- [ ] **Step 1: 写失败测试（annotator/reviewer/manager 权限矩阵）**
-- [ ] **Step 2: 实现最小权限拦截**
-- [ ] **Step 3: 执行回归测试**
+- [x] **Step 1: 写失败测试（annotator/reviewer/manager 权限矩阵）**
+- [x] **Step 2: 实现最小权限拦截**
+- [x] **Step 3: 执行回归测试**
 
 ### Task 4: 中文化与验收脚本（下一步）
 
