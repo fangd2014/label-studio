@@ -14,7 +14,7 @@ USERNAME_MAX_LENGTH = 30
 DISPLAY_NAME_LENGTH = 100
 USERNAME_LENGTH_ERR = f'Please enter a username {USERNAME_MAX_LENGTH} characters or fewer in length'
 DISPLAY_NAME_LENGTH_ERR = f'Please enter a display name {DISPLAY_NAME_LENGTH} characters or fewer in length'
-INVALID_USER_ERROR = "The email and password you entered don't match."
+INVALID_USER_ERROR = '邮箱或密码不正确，请重试。'
 
 FOUND_US_ELABORATE = 'Other'
 FOUND_US_OPTIONS = (
