@@ -44,8 +44,8 @@ const VersionCard = ({ version, selected, onSelect, editable, onDelete }) => {
   const confirmDelete = useCallback(
     (version) => {
       confirm({
-        title: "Delete Predictions",
-        body: "This action cannot be undone. Are you sure?",
+        title: "删除预测结果",
+        body: "此操作无法撤销，确认继续吗？",
         buttonLook: "destructive",
         onOk() {
           onDelete?.(version);
@@ -61,7 +61,7 @@ const VersionCard = ({ version, selected, onSelect, editable, onDelete }) => {
         <div className={rootClass.elem("title").toClassName()}>
           {version.model_version}
           {version.model_version === "undefined" && (
-            <Tooltip title="Model version is undefined. Likely means that model_version field was missing when predictions were imported.">
+            <Tooltip title="模型版本为 undefined，通常表示导入预测时缺少 model_version 字段。">
               <IconInfoOutline className={cn("help-icon").toClassName()} width="14" height="14" />
             </Tooltip>
           )}
@@ -72,7 +72,7 @@ const VersionCard = ({ version, selected, onSelect, editable, onDelete }) => {
             &nbsp;{version.count}
           </div>
           <div className={rootClass.elem("group").toClassName()}>
-            Last prediction created&nbsp;
+            最近一次预测创建于&nbsp;
             <Tooltip title={format(parseISO(version.latest), "yyyy-MM-dd HH:mm:ss")}>
               <span>
                 {formatDistanceToNow(parseISO(version.latest), {
@@ -89,7 +89,7 @@ const VersionCard = ({ version, selected, onSelect, editable, onDelete }) => {
           content={
             <Menu size="medium" contextual>
               <Menu.Item onClick={() => confirmDelete(version)} isDangerous>
-                Delete
+                删除
               </Menu.Item>
             </Menu>
           }

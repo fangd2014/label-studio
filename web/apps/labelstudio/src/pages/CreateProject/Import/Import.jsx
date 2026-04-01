@@ -217,8 +217,8 @@ export const ImportPage = ({
   const onError = (err) => {
     console.error(err);
     // @todo workaround for error about input size in a wrong html format
-    if (typeof err === "string" && err.includes("RequestDataTooBig")) {
-      const message = "Imported file is too big";
+  if (typeof err === "string" && err.includes("RequestDataTooBig")) {
+    const message = "导入文件过大";
       const extra = err.match(/"exception_value">(.*)<\/pre>/)?.[1];
 
       err = { message, extra };
@@ -381,21 +381,21 @@ export const ImportPage = ({
           method="POST"
           onSubmit={onLoadURL}
         >
-          <Input placeholder="Dataset URL" name="url" ref={urlRef} rawClassName="h-[40px]" />
-          <Button variant="primary" look="outlined" type="submit" aria-label="Add URL">
-            Add URL
+          <Input placeholder="数据集 URL" name="url" ref={urlRef} rawClassName="h-[40px]" />
+          <Button variant="primary" look="outlined" type="submit" aria-label="添加 URL">
+            添加 URL
           </Button>
         </form>
-        <span>or</span>
+        <span>或</span>
         <Button
           variant="primary"
           look="outlined"
           type="button"
           onClick={() => document.getElementById("file-input").click()}
           leading={<IconUpload />}
-          aria-label="Upload file"
+          aria-label="上传文件"
         >
-          Upload {files.uploaded.length ? "More " : ""}Files
+          {files.uploaded.length ? "继续上传文件" : "上传文件"}
         </Button>
         {ff.isActive(ff.FF_SAMPLE_DATASETS) && (
           <SampleDatasetSelect samples={samples} sample={sample} onSampleApplied={onSampleDatasetSelect} />
@@ -406,16 +406,16 @@ export const ImportPage = ({
             .mod({ highlighted: highlightCsvHandling, hidden: !csvHandling })
             .toClassName()}
         >
-          <span>Treat CSV/TSV as</span>
+          <span>将 CSV/TSV 视为</span>
           <label>
-            <input {...csvProps} value="tasks" checked={csvHandling === "tasks"} /> List of tasks
+            <input {...csvProps} value="tasks" checked={csvHandling === "tasks"} /> 任务列表
           </label>
           <label>
-            <input {...csvProps} value="ts" checked={csvHandling === "ts"} /> Time Series or Whole Text File
+            <input {...csvProps} value="ts" checked={csvHandling === "ts"} /> 时间序列或整篇文本文件
           </label>
         </div>
         <div className={importClass.elem("status").toClassName()}>
-          {files.uploaded.length ? `${files.uploaded.length} files uploaded` : ""}
+          {files.uploaded.length ? `${files.uploaded.length} 个文件已上传` : ""}
         </div>
       </header>
 
@@ -434,26 +434,26 @@ export const ImportPage = ({
                   <div className={`${dropzoneClass.elem("content")} w-full`}>
                     <IconFileUpload height="64" className={dropzoneClass.elem("icon").toClassName()} />
                     <header>
-                      Drag & drop files here
+                      将文件拖放到这里
                       <br />
-                      or click to browse
+                      或点击浏览
                     </header>
 
                     <dl>
-                      <dt>Images</dt>
+                      <dt>图像</dt>
                       <dd>{supportedExtensions.image.join(", ")}</dd>
-                      <dt>Audio</dt>
+                      <dt>音频</dt>
                       <dd>{supportedExtensions.audio.join(", ")}</dd>
                       <dt>
                         <div className="flex items-center gap-1">
-                          Video
-                          <Tooltip title="Video format support depends on your browser. Click to learn more.">
+                          视频
+                          <Tooltip title="视频格式支持取决于你的浏览器。点击了解更多。">
                             <a
                               href="https://labelstud.io/tags/video#Video-format"
                               target="_blank"
                               rel="noopener noreferrer"
                               className="inline-flex items-center"
-                              aria-label="Learn more about video format support (opens in a new tab)"
+                              aria-label="了解更多视频格式支持信息（新标签页打开）"
                             >
                               <IconInfoOutline className="w-4 h-4 text-primary-content hover:text-primary-content-hover" />
                             </a>
@@ -461,57 +461,57 @@ export const ImportPage = ({
                         </div>
                       </dt>
                       <dd>{supportedExtensions.video.join(", ")}</dd>
-                      <dt>HTML / HyperText</dt>
+                      <dt>HTML / 超文本</dt>
                       <dd>{supportedExtensions.html.join(", ")}</dd>
-                      <dt>Text</dt>
+                      <dt>文本</dt>
                       <dd>{supportedExtensions.text.join(", ")}</dd>
-                      <dt>Structured data</dt>
+                      <dt>结构化数据</dt>
                       <dd>{supportedExtensions.structuredData.join(", ")}</dd>
                       <dt>PDF</dt>
                       <dd>{supportedExtensions.pdf.join(", ")}</dd>
                     </dl>
                     <div className="tips">
-                      <b>Important:</b>
+                      <b>重要提示：</b>
                       <ul className="mt-2 ml-4 list-disc font-normal">
                         <li>
-                          We recommend{" "}
+                          由于{" "}
                           <a
                             href="https://labelstud.io/guide/storage.html"
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="Cloud Storage documentation (opens in a new tab)"
+                            aria-label="云存储文档（新标签页打开）"
                           >
-                            Cloud Storage
+                            云存储
                           </a>{" "}
-                          over direct uploads due to{" "}
+                          的限制，我们推荐优先使用云存储，而不是直接上传。相关说明见{" "}
                           <a
                             href="https://labelstud.io/guide/tasks.html#Import-data-from-the-Label-Studio-UI"
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="Upload limitations documentation (opens in a new tab)"
+                            aria-label="上传限制文档（新标签页打开）"
                           >
-                            upload limitations
+                            上传限制
                           </a>
-                          .
+                          。
                         </li>
                         <li>
-                          For PDFs, use{" "}
+                          对于 PDF，请使用{" "}
                           <a
                             href="https://labelstud.io/templates/multi-page-document-annotation"
                             target="_blank"
                             rel="noopener noreferrer"
-                            aria-label="Multi-image labeling documentation (opens in a new tab)"
+                            aria-label="多图像标注文档（新标签页打开）"
                           >
-                            multi-image labeling
+                            多图像标注
                           </a>
-                          . JSONL or Parquet (Enterprise only) files require cloud storage.
+                          。JSONL 或 Parquet（仅 Enterprise）文件需要通过云存储导入。
                         </li>
                         <li>
-                          Check the documentation to{" "}
+                          查看文档以{" "}
                           <a target="_blank" href="https://labelstud.io/guide/predictions.html" rel="noreferrer">
-                            import preannotated data
+                            导入预标注数据
                           </a>
-                          .
+                          。
                         </li>
                       </ul>
                     </div>
@@ -523,7 +523,7 @@ export const ImportPage = ({
             {showList && (
               <div className="w-full">
                 <SimpleCard
-                  title="Files"
+                  title="文件"
                   className="w-full h-full"
                   contentClassName="overflow-y-auto h-[calc(100%-48px)]"
                 >
@@ -534,7 +534,7 @@ export const ImportPage = ({
                           <td>
                             <div className="flex items-center gap-2">
                               {sample.title}
-                              <Badge>Sample</Badge>
+                              <Badge>示例</Badge>
                             </div>
                           </td>
                           <td>{sample.description}</td>
@@ -614,7 +614,7 @@ export const ImportPage = ({
               <div className="w-full h-full flex flex-col min-h-[400px]">
                 {projectConfigured ? (
                   <SimpleCard
-                    title="Expected Input Preview"
+                    title="预期输入预览"
                     className="w-full h-full overflow-hidden flex flex-col"
                     contentClassName="h-[calc(100%-48px)]"
                     flushContent
@@ -622,7 +622,7 @@ export const ImportPage = ({
                     {sampleConfig.data ? (
                       <div className={importClass.elem("code-wrapper").toClassName()}>
                         <CodeBlock
-                          title="Expected Input Preview"
+                          title="预期输入预览"
                           code={sampleConfig?.data ?? ""}
                           className="w-full h-full"
                         />
@@ -633,7 +633,7 @@ export const ImportPage = ({
                       </div>
                     ) : sampleConfig.isError ? (
                       <div className="w-[calc(100%-24px)] text-lg text-negative-content bg-negative-background border m-3 rounded-md border-negative-border-subtle p-4">
-                        Something went wrong, the sample data could not be loaded.
+                        出现错误，示例数据无法加载。
                       </div>
                     ) : null}
                   </SimpleCard>
@@ -644,18 +644,18 @@ export const ImportPage = ({
                         <IconCode className="w-6 h-6 text-primary-icon" />
                       </div>
                       <div className="flex flex-col items-center gap-tighter">
-                        <div className="text-label-small text-neutral-content font-medium">View JSON input format</div>
+                        <div className="text-label-small text-neutral-content font-medium">查看 JSON 输入格式</div>
                         <div className="text-body-small text-neutral-content-subtler text-center">
-                          Setup your{" "}
+                          请先完成{" "}
                           <Button
                             type="button"
                             look="string"
                             onClick={openConfig}
                             className="border-none bg-none p-0 m-0 text-primary-content underline"
                           >
-                            labeling configuration
+                            标注配置
                           </Button>{" "}
-                          first to preview the expected JSON data format
+                          ，再预览预期的 JSON 数据格式
                         </div>
                       </div>
                     </div>
