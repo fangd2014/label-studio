@@ -53,3 +53,12 @@ class TestProjectMemberRoleAPI(APITestCase):
         memberships = response.json()
         project_member = next(item for item in memberships if item['user'] == self.member_user.id)
         assert project_member['role'] == 'reviewer'
+
+    def test_patch_membership_invalid_role_returns_chinese_error(self):
+        self.client.force_authenticate(user=self.owner)
+        ProjectMember.objects.create(project=self.project, user=self.member_user)
+
+        response = self.client.patch(self.detail_url(), {'role': 'invalid_role'}, format='json')
+
+        assert response.status_code == 400
+        assert '角色仅支持 annotator、reviewer、manager' in str(response.json())

@@ -420,6 +420,13 @@ class ProjectMembershipSerializer(serializers.ModelSerializer):
             'updated_at',
         ]
         read_only_fields = ['project', 'created_at', 'updated_at']
+        extra_kwargs = {
+            'role': {
+                'error_messages': {
+                    'invalid_choice': '角色仅支持 annotator、reviewer、manager',
+                }
+            }
+        }
 
     def get_fields(self):
         fields = super().get_fields()

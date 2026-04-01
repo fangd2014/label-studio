@@ -38,6 +38,7 @@ class TestProjectRolePermissions(APITestCase):
         response = self.client.patch(self.project_url(), {'title': 'annotator cannot edit'}, format='json')
 
         assert response.status_code == 403
+        assert response.json()['detail'] == '当前项目角色无权执行此操作，请联系项目管理员。'
 
     def test_reviewer_cannot_create_project_membership(self):
         self.client.force_authenticate(user=self.reviewer)

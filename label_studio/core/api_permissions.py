@@ -3,6 +3,8 @@ from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 
 class HasObjectPermission(BasePermission):
+    message = '当前用户没有权限执行此操作。'
+
     def _get_project_from_object(self, obj):
         project = getattr(obj, 'project', None)
         if project is not None:
@@ -67,7 +69,10 @@ class HasObjectPermission(BasePermission):
             return True
 
         role = self._get_user_project_role(request.user, project)
-        return project_role_allows_permission(role, permission)
+        allowed = project_role_allows_permission(role, permission)
+        if not allowed:
+            self.message = '当前项目角色无权执行此操作，请联系项目管理员。'
+        return allowed
 
     def has_permission(self, request, view):
         project = self._get_project_from_view(view)
@@ -76,6 +81,7 @@ class HasObjectPermission(BasePermission):
     def has_object_permission(self, request, view, obj):
         has_permission = getattr(obj, 'has_permission', None)
         if callable(has_permission) and not has_permission(request.user):
+            self.message = '当前用户没有该资源访问权限。'
             return False
 
         project = self._get_project_from_object(obj) or self._get_project_from_view(view)

@@ -68,6 +68,6 @@ Expected: `3 passed`
 - Create: `docs/verification/phase2-step-by-step-cn.md`
 - Modify: 相关 API 错误消息与前端文案
 
-- [ ] **Step 1: 补齐中文提示与术语**
-- [ ] **Step 2: 提供每步 curl/pytest 验证命令**
-- [ ] **Step 3: Docker 环境验证并记录结果**
+- [x] **Step 1: 补齐中文提示与术语**
+- [x] **Step 2: 提供每步 curl/pytest 验证命令**
+- [x] **Step 3: Docker 环境验证并记录结果**
