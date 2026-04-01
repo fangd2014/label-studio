@@ -83,6 +83,7 @@ class Command(BaseCommand):
             'workspace_id': workspace.id,
             'project_id': project.id,
             'task_count': Task.objects.filter(project=project).count(),
+            'first_task_id': Task.objects.filter(project=project).order_by('id').values_list('id', flat=True).first(),
             'owner_user_id': owner.id,
             'owner_email': owner.email,
             'owner_password': options['owner_password'],
@@ -133,11 +134,27 @@ class Command(BaseCommand):
     def _get_or_create_organization(title, owner):
         organization = Organization.objects.filter(title=title).first()
         if organization is None:
-            return Organization.create_organization(title=title, created_by=owner)
-
+            organization = Organization.create_organization(
+                title=title,
+                created_by=owner,
+                legacy_api_tokens_enabled=True,
+            )
         if organization.created_by_id is None:
             organization.created_by = owner
             organization.save(update_fields=['created_by'])
+
+        # Keep legacy API token auth enabled for repeatable local/CI smoke checks.
+        if hasattr(organization, 'jwt'):
+            jwt_settings = organization.jwt
+            update_fields = []
+            if not jwt_settings.api_tokens_enabled:
+                jwt_settings.api_tokens_enabled = True
+                update_fields.append('api_tokens_enabled')
+            if not jwt_settings.legacy_api_tokens_enabled:
+                jwt_settings.legacy_api_tokens_enabled = True
+                update_fields.append('legacy_api_tokens_enabled')
+            if update_fields:
+                jwt_settings.save(update_fields=update_fields)
 
         return organization
 
