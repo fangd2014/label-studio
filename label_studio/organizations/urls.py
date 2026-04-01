@@ -18,6 +18,8 @@ _api_urlpattens = [
     path('', api.OrganizationListAPI.as_view(), name='organization-list'),
     # organization detail viewset
     path('<int:pk>', api.OrganizationAPI.as_view(), name='organization-detail'),
+    # organization workspaces
+    path('<int:pk>/workspaces', api.OrganizationWorkspaceListAPI.as_view(), name='organization-workspaces-list'),
     # organization memberships list viewset
     path('<int:pk>/memberships', api.OrganizationMemberListAPI.as_view(), name='organization-memberships-list'),
     path(

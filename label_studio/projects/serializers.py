@@ -249,6 +249,21 @@ class ProjectSerializer(FlexFieldsModelSerializer):
                 pass
         raise serializers.ValidationError('Color must be in "#RRGGBB" format')
 
+    def validate_workspace(self, value):
+        if value is None:
+            return value
+        request = self.context.get('request')
+        if self.instance is not None:
+            organization = self.instance.organization
+        elif request is not None:
+            organization = request.user.active_organization
+        else:
+            organization = None
+
+        if organization is not None and value.organization_id != organization.id:
+            raise serializers.ValidationError('工作区必须属于当前组织')
+        return value
+
     def validate_control_weights(self, value):
         if not value:
             return value
@@ -277,6 +292,7 @@ class ProjectSerializer(FlexFieldsModelSerializer):
             'enable_empty_annotation',
             'show_annotation_history',
             'organization',
+            'workspace',
             'color',
             'maximum_annotations',
             'is_published',

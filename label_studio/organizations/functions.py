@@ -1,7 +1,7 @@
 from core.utils.common import temporary_disconnect_all_signals
 from django.conf import settings
 from django.db import transaction
-from organizations.models import Organization, OrganizationMember
+from organizations.models import Organization, OrganizationMember, Workspace
 from projects.models import Project
 
 
@@ -13,6 +13,7 @@ def create_organization(title, created_by, legacy_api_tokens_enabled=False, **kw
     with transaction.atomic():
         org = Organization.objects.create(title=title, created_by=created_by, **kwargs)
         OrganizationMember.objects.create(user=created_by, organization=org)
+        Workspace.get_or_create_default(org, created_by=created_by)
         if JWT_ACCESS_TOKEN_ENABLED:
             # set auth tokens to new system for new users, unless specified otherwise
             org.jwt.api_tokens_enabled = True

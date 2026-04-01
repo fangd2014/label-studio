@@ -195,3 +195,59 @@ class Organization(OrganizationMixin, models.Model):
 
     class Meta:
         db_table = 'organization'
+
+
+class Workspace(models.Model):
+    """Workspace groups projects inside one organization."""
+
+    title = models.CharField(_('workspace title'), max_length=255)
+    description = models.TextField(_('workspace description'), blank=True, null=False, default='')
+    organization = models.ForeignKey(
+        'organizations.Organization',
+        on_delete=models.CASCADE,
+        related_name='workspaces',
+        help_text='Organization ID',
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name='created_workspaces',
+        null=True,
+        blank=True,
+        help_text='Creator user ID',
+    )
+    is_default = models.BooleanField(default=False, help_text='Whether this workspace is the organization default')
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True)
+    updated_at = models.DateTimeField(_('updated at'), auto_now=True)
+
+    DEFAULT_TITLE = '默认工作区'
+    DEFAULT_DESCRIPTION = '系统自动创建的默认工作区'
+
+    def __str__(self):
+        return f'{self.title}, id={self.pk}, org={self.organization_id}'
+
+    @classmethod
+    def get_or_create_default(cls, organization, created_by=None):
+        owner = created_by or getattr(organization, 'created_by', None)
+        workspace, _ = cls.objects.get_or_create(
+            organization=organization,
+            is_default=True,
+            defaults={
+                'title': cls.DEFAULT_TITLE,
+                'description': cls.DEFAULT_DESCRIPTION,
+                'created_by': owner,
+            },
+        )
+        return workspace
+
+    class Meta:
+        db_table = 'workspace'
+        ordering = ['-is_default', 'pk']
+        constraints = [
+            models.UniqueConstraint(fields=['organization', 'title'], name='unique_workspace_title_per_org'),
+            models.UniqueConstraint(
+                fields=['organization'],
+                condition=Q(is_default=True),
+                name='unique_default_workspace_per_org',
+            ),
+        ]

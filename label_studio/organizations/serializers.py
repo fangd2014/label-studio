@@ -4,7 +4,7 @@ from typing import TypedDict
 
 from drf_dynamic_fields import DynamicFieldsMixin
 from drf_spectacular.utils import extend_schema_serializer
-from organizations.models import Organization, OrganizationMember
+from organizations.models import Organization, OrganizationMember, Workspace
 from projects.models import Project
 from rest_framework import serializers
 from tasks.models import Annotation
@@ -21,6 +21,28 @@ class OrganizationSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
     class Meta:
         model = Organization
         fields = '__all__'
+
+
+class WorkspaceSerializer(DynamicFieldsMixin, serializers.ModelSerializer):
+    class Meta:
+        model = Workspace
+        fields = [
+            'id',
+            'title',
+            'description',
+            'organization',
+            'created_by',
+            'is_default',
+            'created_at',
+            'updated_at',
+        ]
+        read_only_fields = ['organization', 'created_by', 'is_default', 'created_at', 'updated_at']
+
+    def validate_title(self, value):
+        title = value.strip()
+        if not title:
+            raise serializers.ValidationError('工作区名称不能为空')
+        return title
 
 
 # =========================================

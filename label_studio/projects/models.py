@@ -195,6 +195,13 @@ class Project(ProjectMixin, FsmHistoryStateModel):
     organization = models.ForeignKey(
         'organizations.Organization', on_delete=models.CASCADE, related_name='projects', null=True
     )
+    workspace = models.ForeignKey(
+        'organizations.Workspace',
+        on_delete=models.SET_NULL,
+        related_name='projects',
+        null=True,
+        blank=True,
+    )
     label_config = models.TextField(
         _('label config'),
         blank=True,
@@ -856,6 +863,14 @@ class Project(ProjectMixin, FsmHistoryStateModel):
     def save(self, *args, update_fields=None, recalc=True, **kwargs):
         exists = True if self.pk else False
         project_with_config_just_created = not exists and self.label_config
+
+        # Keep project in an explicit workspace; fallback to organization default.
+        if self.organization_id and self.workspace_id is None:
+            from organizations.models import Workspace
+
+            self.workspace = Workspace.get_or_create_default(self.organization, created_by=self.created_by)
+            if update_fields is not None:
+                update_fields = {'workspace'}.union(update_fields)
 
         label_config_has_changed = self._label_config_has_changed()
         logger.debug(

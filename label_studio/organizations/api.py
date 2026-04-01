@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.utils.functional import cached_property
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiParameter, OpenApiResponse, extend_schema
-from organizations.models import Organization, OrganizationMember
+from organizations.models import Organization, OrganizationMember, Workspace
 from organizations.serializers import (
     OrganizationIdSerializer,
     OrganizationInviteSerializer,
@@ -19,6 +19,7 @@ from organizations.serializers import (
     OrganizationMemberListSerializer,
     OrganizationMemberSerializer,
     OrganizationSerializer,
+    WorkspaceSerializer,
 )
 from projects.models import Project
 from rest_framework import generics, status
@@ -361,6 +362,43 @@ class OrganizationAPI(generics.RetrieveUpdateAPIView):
     @extend_schema(exclude=True)
     def put(self, request, *args, **kwargs):
         return super(OrganizationAPI, self).put(request, *args, **kwargs)
+
+
+@method_decorator(
+    name='get',
+    decorator=extend_schema(
+        tags=['Organizations'],
+        summary='List organization workspaces',
+        description='Retrieve all workspaces in a specific organization.',
+    ),
+)
+@method_decorator(
+    name='post',
+    decorator=extend_schema(
+        tags=['Organizations'],
+        summary='Create organization workspace',
+        description='Create a new workspace in a specific organization.',
+    ),
+)
+class OrganizationWorkspaceListAPI(generics.ListCreateAPIView):
+    parser_classes = (JSONParser, FormParser, MultiPartParser)
+    serializer_class = WorkspaceSerializer
+    permission_required = ViewClassPermission(
+        GET=all_permissions.organizations_view,
+        POST=all_permissions.organizations_change,
+    )
+
+    def get_organization(self):
+        return generics.get_object_or_404(self.request.user.organizations, pk=self.kwargs['pk'])
+
+    def get_queryset(self):
+        return Workspace.objects.filter(organization=self.get_organization()).order_by('-is_default', 'id')
+
+    def perform_create(self, serializer):
+        org = self.get_organization()
+        if self.request.user.active_organization_id != org.id:
+            raise PermissionDenied('只能在当前激活组织中创建工作区')
+        serializer.save(organization=org, created_by=self.request.user)
 
 
 @method_decorator(
