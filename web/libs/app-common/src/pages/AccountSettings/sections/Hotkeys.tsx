@@ -34,13 +34,13 @@ export const HotkeysHeaderButtons = () => {
     <>
       <div className={`${styles.flexRow} justify-end gap-tight`}>
         <Button variant="neutral" look="outlined" onClick={() => setImportDialogOpen(true)}>
-          Import
+          导入
         </Button>
         <Button variant="neutral" look="outlined" onClick={handleExportHotkeys}>
-          Export
+          导出
         </Button>
         <Button variant="negative" look="outlined" onClick={handleResetToDefaults}>
-          Reset to Defaults
+          恢复默认
         </Button>
       </div>
 
@@ -195,27 +195,27 @@ export const HotkeysManager = () => {
         setDirtyState(newDirtyState);
 
         const sectionName =
-          sectionId === "settings" ? "Settings" : typedHotkeySections.find((s: Section) => s.id === sectionId)?.title;
+          sectionId === "settings" ? "设置" : typedHotkeySections.find((s: Section) => s.id === sectionId)?.title;
 
         if (toast) {
           toast.show({
-            message: `${sectionName} hotkeys saved successfully`,
+            message: `${sectionName} 快捷键已保存`,
             type: ToastType.info,
           });
         }
       } else {
         if (toast) {
           toast.show({
-            message: `Failed to save: ${result.error || "Unknown error"}`,
+            message: `保存失败：${result.error || "未知错误"}`,
             type: ToastType.error,
           });
         }
       }
     } catch (error: unknown) {
       if (toast) {
-        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        const errorMessage = error instanceof Error ? error.message : "未知错误";
         toast.show({
-          message: `Error saving: ${errorMessage}`,
+          message: `保存出错：${errorMessage}`,
           type: ToastType.error,
         });
       }
@@ -240,19 +240,19 @@ export const HotkeysManager = () => {
       const result = await saveHotkeysToAPI(importedHotkeys, importedSettings);
 
       if (!result.ok) {
-        throw new Error(result.error || "Failed to save imported hotkeys");
+        throw new Error(result.error || "保存导入快捷键失败");
       }
 
       // Reset dirty state
       setDirtyState({});
 
       if (toast) {
-        toast.show({ message: "Hotkeys imported successfully", type: ToastType.info });
+        toast.show({ message: "快捷键导入成功", type: ToastType.info });
       }
     } catch (error: unknown) {
       if (toast) {
-        const errorMessage = error instanceof Error ? error.message : "Unknown error";
-        toast.show({ message: `Error importing hotkeys: ${errorMessage}`, type: ToastType.error });
+        const errorMessage = error instanceof Error ? error.message : "未知错误";
+        toast.show({ message: `导入快捷键失败：${errorMessage}`, type: ToastType.error });
       }
     } finally {
       setIsLoading(false);
@@ -324,9 +324,9 @@ export const HotkeysManager = () => {
       <Dialog open={duplicateConfirmDialog.open} onOpenChange={handleCancelDuplicate}>
         <DialogContent className="bg-neutral-surface">
           <DialogHeader>
-            <DialogTitle>Warning: Duplicate Hotkey Detected</DialogTitle>
+            <DialogTitle>警告：检测到重复快捷键</DialogTitle>
             <DialogDescription>
-              The hotkey combination "<strong>{duplicateConfirmDialog.newKey}</strong>" is already being used by:
+              快捷键组合 "<strong>{duplicateConfirmDialog.newKey}</strong>" 已被以下操作占用：
             </DialogDescription>
           </DialogHeader>
 
@@ -357,16 +357,14 @@ export const HotkeysManager = () => {
             <div>
               <IconWarning className="text-warning-icon" />
             </div>
-            <div>
-              Having duplicate hotkeys may cause conflicts and unexpected behavior. Are you sure you want to proceed?
-            </div>
+            <div>使用重复快捷键可能导致冲突和异常行为。确认继续吗？</div>
           </DialogDescription>
 
           <DialogFooter>
             <Button variant="neutral" onClick={handleCancelDuplicate}>
-              Cancel
+              取消
             </Button>
-            <Button onClick={handleConfirmDuplicate}>Allow Duplicate</Button>
+            <Button onClick={handleConfirmDuplicate}>仍然使用重复快捷键</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

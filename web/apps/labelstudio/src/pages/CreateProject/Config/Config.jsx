@@ -360,9 +360,7 @@ const ConfigureColumns = ({ columns, template }) => {
     <div className={configClass.elem("object").toClassName()}>
       <h4>配置数据</h4>
       {template.objects.length > 1 && columns?.length > 0 && columns.length < template.objects.length && (
-        <p className={configClass.elem("object-error").toClassName()}>
-          当前数据字段不足，该模板需要更多字段
-        </p>
+        <p className={configClass.elem("object-error").toClassName()}>当前数据字段不足，该模板需要更多字段</p>
       )}
       {columns?.length === 0 && (
         <p className={configClass.elem("object-error").toClassName()}>

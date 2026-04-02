@@ -55,11 +55,7 @@ const CustomBackendForm = ({ action, backend, project, onSubmit }) => {
       )}
 
       <Form.Row columnCount={1}>
-        <TextArea
-          name="extra_params"
-          label="连接模型时传递的额外参数"
-          style={{ minHeight: 120 }}
-        />
+        <TextArea name="extra_params" label="连接模型时传递的额外参数" style={{ minHeight: 120 }} />
       </Form.Row>
 
       <Form.Row columnCount={1}>

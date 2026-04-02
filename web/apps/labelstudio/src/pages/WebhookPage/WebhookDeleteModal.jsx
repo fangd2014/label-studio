@@ -12,9 +12,7 @@ export const WebhookDeleteModal = ({ onDelete }) => {
       const rootClass = cn("webhook-delete-modal");
       return (
         <div className={rootClass}>
-          <div className={rootClass.elem("modal-text").toClassName()}>
-            确认要删除该回调吗？此操作无法撤销。
-          </div>
+          <div className={rootClass.elem("modal-text").toClassName()}>确认要删除该回调吗？此操作无法撤销。</div>
         </div>
       );
     },

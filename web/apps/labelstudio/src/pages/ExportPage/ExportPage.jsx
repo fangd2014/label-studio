@@ -209,9 +209,7 @@ export const ExportPage = () => {
 const FormatInfo = ({ availableFormats, selected, onClick }) => {
   return (
     <div className={cn("formats").toClassName()}>
-      <div className={cn("formats").elem("info").toClassName()}>
-        你可以选择以下格式之一导出数据集：
-      </div>
+      <div className={cn("formats").elem("info").toClassName()}>你可以选择以下格式之一导出数据集：</div>
       <div className={cn("formats").elem("list").toClassName()}>
         {availableFormats.map((format) => (
           <div
@@ -320,7 +318,8 @@ const ExportTimeoutGuidance = ({ projectId, exportType }) => {
         <div className={cn("export-page").elem("timeout-title").toClassName()}>导出超时</div>
       </div>
       <div className={cn("export-page").elem("timeout-body").toClassName()}>
-        Community Edition 的 UI 导出是同步执行的。对大型数据集而言，导出时间可能超过常见反向代理超时时间（通常约 90 秒）。
+        Community Edition 的 UI 导出是同步执行的。对大型数据集而言，导出时间可能超过常见反向代理超时时间（通常约 90
+        秒）。
       </div>
 
       <div className={cn("export-page").elem("timeout-actions").toClassName()}>

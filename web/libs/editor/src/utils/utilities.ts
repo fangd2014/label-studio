@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from "date-fns";
+import { zhCN } from "date-fns/locale";
 import { destroy, detach } from "mobx-state-tree";
 import { camelCase, snakeCase } from "@humansignal/core/lib/utils/string";
 
@@ -247,9 +248,9 @@ export const triggerResizeEvent = () => {
 };
 
 export const humanDateDiff = (date: string | number): string => {
-  const fnsDate = formatDistanceToNow(new Date(date), { addSuffix: true });
+  const fnsDate = formatDistanceToNow(new Date(date), { addSuffix: true, locale: zhCN });
 
-  if (fnsDate === "less than a minute ago") return "just now";
+  if (fnsDate === "不到 1 分钟前") return "刚刚";
   return fnsDate;
 };
 

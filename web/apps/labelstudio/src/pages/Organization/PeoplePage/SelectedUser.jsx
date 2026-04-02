@@ -30,12 +30,7 @@ export const SelectedUser = ({ user, onClose }) => {
 
   return (
     <div className={cn("user-info").toClassName()}>
-      <Button
-        look="string"
-        onClick={onClose}
-        className="absolute top-[20px] right-[24px]"
-        aria-label="关闭用户详情"
-      >
+      <Button look="string" onClick={onClose} className="absolute top-[20px] right-[24px]" aria-label="关闭用户详情">
         <IconCross />
       </Button>
 
@@ -70,7 +65,7 @@ export const SelectedUser = ({ user, onClose }) => {
       )}
 
       <p className={cn("user-info").elem("last-active").toClassName()}>
-        最近活跃时间：{format(new Date(user.last_activity), "dd MMM yyyy, KK:mm a")}
+        最近活跃时间：{format(new Date(user.last_activity), "yyyy年MM月dd日 HH:mm")}
       </p>
     </div>
   );

@@ -39,6 +39,13 @@ export const STATE_VISUALS: Record<string, StateVisualConfig> = {
     baseIconColor: "var(--color-accent-kale-subtlest)",
     subtleIconColor: "var(--color-accent-kale-base)",
   },
+  已完成: {
+    icon: IconStateDone,
+    baseBg: "var(--color-accent-kale-base)",
+    subtleBg: "var(--color-accent-kale-subtle)",
+    baseIconColor: "var(--color-accent-kale-subtlest)",
+    subtleIconColor: "var(--color-accent-kale-base)",
+  },
   // In Review state (plum palette)
   "In Review": {
     icon: IconStateInReview,
@@ -47,8 +54,22 @@ export const STATE_VISUALS: Record<string, StateVisualConfig> = {
     baseIconColor: "var(--color-accent-plum-subtlest)",
     subtleIconColor: "var(--color-accent-plum-base)",
   },
+  审核中: {
+    icon: IconStateInReview,
+    baseBg: "var(--color-accent-plum-base)",
+    subtleBg: "var(--color-accent-plum-subtle)",
+    baseIconColor: "var(--color-accent-plum-subtlest)",
+    subtleIconColor: "var(--color-accent-plum-base)",
+  },
   // Needs Review state (cantaloupe palette)
   "Needs Review": {
+    icon: IconStateNeedsReview,
+    baseBg: "var(--color-accent-canteloupe-base)",
+    subtleBg: "var(--color-accent-canteloupe-subtle)",
+    baseIconColor: "var(--color-accent-canteloupe-subtlest)",
+    subtleIconColor: "var(--color-accent-canteloupe-base)",
+  },
+  待审核: {
     icon: IconStateNeedsReview,
     baseBg: "var(--color-accent-canteloupe-base)",
     subtleBg: "var(--color-accent-canteloupe-subtle)",
@@ -70,6 +91,13 @@ export const STATE_VISUALS: Record<string, StateVisualConfig> = {
     baseIconColor: "var(--color-accent-grape-subtlest)",
     subtleIconColor: "var(--color-accent-grape-base)",
   },
+  标注中: {
+    icon: IconStateAnnotating,
+    baseBg: "var(--color-accent-grape-base)",
+    subtleBg: "var(--color-accent-grape-subtle)",
+    baseIconColor: "var(--color-accent-grape-subtlest)",
+    subtleIconColor: "var(--color-accent-grape-base)",
+  },
   // Initial state (sand/neutral palette)
   Initial: {
     icon: IconStateInitial,
@@ -79,6 +107,13 @@ export const STATE_VISUALS: Record<string, StateVisualConfig> = {
     subtleIconColor: "var(--color-accent-sand-bold)",
   },
   Created: {
+    icon: IconStateInitial,
+    baseBg: "var(--color-accent-sand-subtle)",
+    subtleBg: "var(--color-accent-sand-subtle)",
+    baseIconColor: "var(--color-accent-sand-bold)",
+    subtleIconColor: "var(--color-accent-sand-bold)",
+  },
+  初始: {
     icon: IconStateInitial,
     baseBg: "var(--color-accent-sand-subtle)",
     subtleBg: "var(--color-accent-sand-subtle)",

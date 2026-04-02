@@ -50,7 +50,7 @@ const OutlinerPanelComponent: FC<OutlinerPanelProps> = ({ regions, ...props }) =
   regions.setGrouping(group);
 
   return (
-    <PanelBase {...props} name="outliner" mix={OutlinerFFClasses} title="Outliner">
+    <PanelBase {...props} name="outliner" mix={OutlinerFFClasses} title="区域列表">
       <ViewControls
         ordering={regions.sort}
         regions={regions}
@@ -99,17 +99,17 @@ const OutlinerStandAlone: FC<OutlinerPanelProps> = ({ regions }) => {
 const OutlinerEmptyState = () => (
   <EmptyState
     icon={<IconLsLabeling width={24} height={24} />}
-    header="Labeled regions will appear here"
+    header="已标注区域会显示在这里"
     description={
       <>
         <span>
-          Start labeling and track your results
+          开始标注并在此处追踪结果
           <br />
-          using this panel
+          使用此面板
         </span>
       </>
     }
-    learnMore={{ href: getDocsUrl("guide/labeling"), text: "Learn more", testId: "regions-panel-learn-more" }}
+    learnMore={{ href: getDocsUrl("guide/labeling"), text: "了解更多", testId: "regions-panel-learn-more" }}
   />
 );
 
@@ -127,10 +127,8 @@ const OutlinerTreeComponent: FC<OutlinerTreeComponentProps> = observer(({ region
       {allRegionsHidden ? (
         <div className={cn("filters-info").toClassName()}>
           <IconInfo width={21} height={20} />
-          <div className={cn("filters-info").elem("filters-title").toClassName()}>All regions hidden</div>
-          <div className={cn("filters-info").elem("filters-description").toClassName()}>
-            Adjust or remove the filters to view
-          </div>
+          <div className={cn("filters-info").elem("filters-title").toClassName()}>所有区域已隐藏</div>
+          <div className={cn("filters-info").elem("filters-description").toClassName()}>调整或移除筛选条件后可查看</div>
         </div>
       ) : regions?.regions?.length > 0 ? (
         <>
@@ -141,10 +139,10 @@ const OutlinerTreeComponent: FC<OutlinerTreeComponentProps> = observer(({ region
                 <div className={cn("filters-info").toClassName()}>
                   <IconInfo width={21} height={20} />
                   <div className={cn("filters-info").elem("filters-title").toClassName()}>
-                    There {hiddenRegions === 1 ? "is" : "are"} {hiddenRegions} hidden region{hiddenRegions > 1 && "s"}
+                    已隐藏 {hiddenRegions} 个区域
                   </div>
                   <div className={cn("filters-info").elem("filters-description").toClassName()}>
-                    Adjust or remove filters to view
+                    调整或移除筛选条件后可查看
                   </div>
                 </div>
               )

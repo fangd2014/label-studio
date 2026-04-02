@@ -64,13 +64,7 @@ export const StorageCard = ({ rootClass, target, storage, onEditStorage, onDelet
       />
       <div className={rootClass.elem("sync").toClassName()}>
         <div className="mt-base">
-          <Button
-            look="outlined"
-            waiting={syncing}
-            onClick={startSync}
-            disabled={notSyncedYet}
-            aria-label="同步存储"
-          >
+          <Button look="outlined" waiting={syncing} onClick={startSync} disabled={notSyncedYet} aria-label="同步存储">
             同步存储
           </Button>
           {notSyncedYet && (

@@ -151,7 +151,7 @@ export const StorageSummary = ({ target, storage, className, storageTypes = [] }
         )}
 
         <DescriptionList.Item term="最近同步">
-          {storage.last_sync ? format(new Date(storage.last_sync), "MMMM dd, yyyy ∙ HH:mm:ss") : "尚未同步"}
+          {storage.last_sync ? format(new Date(storage.last_sync), "yyyy-MM-dd HH:mm:ss") : "尚未同步"}
         </DescriptionList.Item>
       </DescriptionList>
     </div>

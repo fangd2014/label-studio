@@ -146,7 +146,7 @@ class StateRegistry {
 
     if (!metadata?.tooltips) {
       // No tooltips defined, return generic description
-      return `${this.getLabel(state)} state`;
+      return `${this.getLabel(state)} 状态`;
     }
 
     // Look up entity-specific tooltip, fall back to first available tooltip
@@ -157,7 +157,7 @@ class StateRegistry {
 
     // Fall back to any available tooltip
     const firstTooltip = Object.values(metadata.tooltips)[0];
-    return firstTooltip ?? `${this.getLabel(state)} state`;
+    return firstTooltip ?? `${this.getLabel(state)} 状态`;
   }
 
   /**
@@ -275,30 +275,30 @@ export const stateRegistry = new StateRegistry();
 stateRegistry.registerBatch({
   CREATED: {
     type: StateType.INITIAL,
-    label: "Initial",
+    label: "初始",
     tooltips: {
-      task: "Task has been created and is ready for annotation",
-      annotation: "Annotation has been created",
-      project: "Project has been created and is ready for configuration",
+      task: "任务已创建，可开始标注",
+      annotation: "标注已创建",
+      project: "项目已创建，可开始配置",
     },
   },
 
   ANNOTATION_IN_PROGRESS: {
     type: StateType.IN_PROGRESS,
-    label: "Annotating",
+    label: "标注中",
     tooltips: {
-      task: "Task is currently being annotated",
-      project: "Annotation work is in progress on this project",
+      task: "任务正在标注中",
+      project: "项目中的标注工作正在进行",
     },
   },
 
   COMPLETED: {
     type: StateType.TERMINAL,
-    label: "Done",
+    label: "已完成",
     tooltips: {
-      task: "Task is fully completed and no further work is needed",
-      annotation: "Annotation is completed and finalized",
-      project: "Project is completed - all tasks are done",
+      task: "任务已完成，无需继续处理",
+      annotation: "标注已完成并已确认",
+      project: "项目已完成，所有任务已处理",
     },
   },
 });

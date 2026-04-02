@@ -81,6 +81,7 @@ export const LabelButton = injector(({ store, canLabel, size, target, selectedCo
   };
 
   selectedCount;
+  const labelText = selectedCount ? `标注 ${selectedCount} 个任务` : "标注全部任务";
 
   return canLabel ? (
     <Interface name="labelButton">
@@ -94,18 +95,17 @@ export const LabelButton = injector(({ store, canLabel, size, target, selectedCo
             style={primaryStyle}
             onClick={onLabelAll}
           >
-            Label {selectedCount ? selectedCount : "All"} Task
-            {!selectedCount || selectedCount > 1 ? "s" : ""}
+            {labelText}
           </Button>
           <Dropdown.Trigger
             alignment="bottom-right"
             content={
               <Menu size="compact">
-                <Menu.Item onClick={onLabelVisible}>Label Tasks As Displayed</Menu.Item>
+                <Menu.Item onClick={onLabelVisible}>按当前筛选结果标注任务</Menu.Item>
               </Menu>
             }
           >
-            <Button size={size} look="outlined" variant="primary" aria-label={"Toggle open"}>
+            <Button size={size} look="outlined" variant="primary" aria-label={"展开更多选项"}>
               <IconChevronDown />
             </Button>
           </Dropdown.Trigger>

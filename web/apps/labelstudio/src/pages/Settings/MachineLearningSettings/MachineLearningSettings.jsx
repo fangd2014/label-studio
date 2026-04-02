@@ -111,12 +111,7 @@ export const MachineLearningSettings = () => {
               title="连接你的第一个模型"
               description="连接机器学习模型，为项目生成实时预测。你可以对比多个预测版本，用自动预标注提升效率，并通过主动学习将团队聚焦到更有价值的任务。"
               actions={
-                <Button
-                  variant="primary"
-                  look="filled"
-                  onClick={() => showMLFormModal()}
-                  aria-label="添加机器学习模型"
-                >
+                <Button variant="primary" look="filled" onClick={() => showMLFormModal()} aria-label="添加机器学习模型">
                   连接模型
                 </Button>
               }

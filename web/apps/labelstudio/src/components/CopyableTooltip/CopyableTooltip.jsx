@@ -4,7 +4,7 @@ import { Tooltip } from "@humansignal/ui";
 
 export const CopyableTooltip = forwardRef(
   ({ children, title, copiedTitle = "已复制", textForCopy, onCopied, ...restProps }, ref) => {
-  const [copied, copyText] = useCopyText({ defaultText: textForCopy });
+    const [copied, copyText] = useCopyText({ defaultText: textForCopy });
 
     const clickHandler = useCallback(
       (e) => {

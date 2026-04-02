@@ -60,24 +60,20 @@ export const StorageProviderForm = forwardRef<unknown, StorageProviderFormProps>
     const steps = isEditMode
       ? [
           {
-            title: "Configure Connection",
+            title: "配置连接",
             schema: getProviderSchema(type || "s3", isEditMode, effectiveTarget),
           },
           // Only include preview and review steps for import storages
-          ...(effectiveTarget === "import"
-            ? [{ title: "Import Settings & Preview" }, { title: "Review & Confirm" }]
-            : []),
+          ...(effectiveTarget === "import" ? [{ title: "导入设置与预览" }, { title: "复核并确认" }] : []),
         ]
       : [
-          { title: "Select Provider", schema: step1Schema },
+          { title: "选择存储提供方", schema: step1Schema },
           {
-            title: "Configure Connection",
+            title: "配置连接",
             schema: getProviderSchema(type || "s3", isEditMode, effectiveTarget),
           },
           // Only include preview and review steps for import storages
-          ...(effectiveTarget === "import"
-            ? [{ title: "Import Settings & Preview" }, { title: "Review & Confirm" }]
-            : []),
+          ...(effectiveTarget === "import" ? [{ title: "导入设置与预览" }, { title: "复核并确认" }] : []),
         ];
 
     // Update steps when provider changes to ensure schema is current
@@ -116,24 +112,20 @@ export const StorageProviderForm = forwardRef<unknown, StorageProviderFormProps>
       const newSteps = isEditMode
         ? [
             {
-              title: "Configure Connection",
+              title: "配置连接",
               schema: getProviderSchema(formData.provider || type || "s3", isEditMode, effectiveTarget),
             },
             // Only include preview and review steps for import storages
-            ...(effectiveTarget === "import"
-              ? [{ title: "Import Settings & Preview" }, { title: "Review & Confirm" }]
-              : []),
+            ...(effectiveTarget === "import" ? [{ title: "导入设置与预览" }, { title: "复核并确认" }] : []),
           ]
         : [
-            { title: "Select Provider", schema: step1Schema },
+            { title: "选择存储提供方", schema: step1Schema },
             {
-              title: "Configure Connection",
+              title: "配置连接",
               schema: getProviderSchema(formData.provider || type || "s3", isEditMode, effectiveTarget),
             },
             // Only include preview and review steps for import storages
-            ...(effectiveTarget === "import"
-              ? [{ title: "Import Settings & Preview" }, { title: "Review & Confirm" }]
-              : []),
+            ...(effectiveTarget === "import" ? [{ title: "导入设置与预览" }, { title: "复核并确认" }] : []),
           ];
       setCurrentSteps(newSteps);
     }, [formData.provider, type, isEditMode, target]);
@@ -256,9 +248,9 @@ export const StorageProviderForm = forwardRef<unknown, StorageProviderFormProps>
 
     // Format file size helper
     const formatSize = (bytes: number) => {
-      if (bytes === 0) return "0 Bytes";
+      if (bytes === 0) return "0 字节";
       const k = 1024;
-      const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB"];
+      const sizes = ["字节", "KB", "MB", "GB", "TB", "PB"];
       const i = Math.floor(Math.log(bytes) / Math.log(k));
       return `${Number.parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`;
     };

@@ -227,9 +227,7 @@ function CreateTokenForm() {
           </CalloutIcon>
           <CalloutTitle>请安全管理访问令牌</CalloutTitle>
         </CalloutHeader>
-        <CalloutContent>
-          不要与任何人共享该密钥。如果怀疑密钥泄露，请立即吊销并重新生成新令牌。
-        </CalloutContent>
+        <CalloutContent>不要与任何人共享该密钥。如果怀疑密钥泄露，请立即吊销并重新生成新令牌。</CalloutContent>
       </Callout>
     </div>
   );

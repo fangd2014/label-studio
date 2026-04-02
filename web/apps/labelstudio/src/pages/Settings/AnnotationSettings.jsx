@@ -41,9 +41,7 @@ export const AnnotationSettings = () => {
               <div className={cn("settings-wrapper").elem("header").toClassName()}>标注说明</div>
               <div className="settings-description">
                 <p style={{ marginBottom: "0" }}>编写说明，帮助标注人员顺利完成任务。</p>
-                <p style={{ marginTop: "8px" }}>
-                  说明字段支持 HTML 标记，也支持使用图片和 iframe（PDF）。
-                </p>
+                <p style={{ marginTop: "8px" }}>说明字段支持 HTML 标记，也支持使用图片和 iframe（PDF）。</p>
               </div>
               <div>
                 <Toggle label="标注前显示" name="show_instruction" />

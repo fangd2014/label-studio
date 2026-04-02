@@ -217,8 +217,8 @@ export const ImportPage = ({
   const onError = (err) => {
     console.error(err);
     // @todo workaround for error about input size in a wrong html format
-  if (typeof err === "string" && err.includes("RequestDataTooBig")) {
-    const message = "导入文件过大";
+    if (typeof err === "string" && err.includes("RequestDataTooBig")) {
+      const message = "导入文件过大";
       const extra = err.match(/"exception_value">(.*)<\/pre>/)?.[1];
 
       err = { message, extra };
@@ -621,11 +621,7 @@ export const ImportPage = ({
                   >
                     {sampleConfig.data ? (
                       <div className={importClass.elem("code-wrapper").toClassName()}>
-                        <CodeBlock
-                          title="预期输入预览"
-                          code={sampleConfig?.data ?? ""}
-                          className="w-full h-full"
-                        />
+                        <CodeBlock title="预期输入预览" code={sampleConfig?.data ?? ""} className="w-full h-full" />
                       </div>
                     ) : sampleConfig.isLoading ? (
                       <div className="w-full flex justify-center py-12">

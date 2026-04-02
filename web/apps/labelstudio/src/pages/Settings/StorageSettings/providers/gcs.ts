@@ -5,20 +5,20 @@ import { IconCloudProviderGCS } from "@humansignal/icons";
 export const gcsProvider: ProviderConfig = {
   name: "gcs",
   title: "Google Cloud Storage",
-  description: "Configure your Google Cloud Storage connection with all required Label Studio settings",
+  description: "配置 Google Cloud Storage 连接与 Label Studio 所需参数",
   icon: IconCloudProviderGCS,
   fields: [
     {
       name: "bucket",
       type: "text",
-      label: "Bucket Name",
+      label: "存储桶名称",
       required: true,
-      schema: z.string().min(1, "Bucket name is required"),
+      schema: z.string().min(1, "请填写存储桶名称"),
     },
     {
       name: "prefix",
       type: "text",
-      label: "Bucket prefix",
+      label: "存储桶前缀",
       placeholder: "path/to/files",
       schema: z.string().optional().default(""),
       target: "export",
@@ -26,8 +26,8 @@ export const gcsProvider: ProviderConfig = {
     {
       name: "google_application_credentials",
       type: "password",
-      label: "Google Application Credentials",
-      description: "Paste the contents of credentials.json in this field OR leave it blank to use ADC.",
+      label: "Google 应用凭据",
+      description: "可粘贴 credentials.json 内容，或留空使用 ADC。",
       autoComplete: "new-password",
       accessKey: true,
       schema: z.string().optional().default(""), // JSON validation could be added if needed
@@ -35,16 +35,15 @@ export const gcsProvider: ProviderConfig = {
     {
       name: "google_project_id",
       type: "text",
-      label: "Google Project ID",
-      description: "Leave blank to inherit from Google Application Credentials.",
+      label: "Google 项目 ID",
+      description: "留空将从 Google 应用凭据中继承。",
       schema: z.string().optional().default(""),
     },
     {
       name: "presign",
       type: "toggle",
-      label: "Use pre-signed URLs (On) / Proxy through the platform (Off)",
-      description:
-        "When pre-signed URLs are enabled, all data bypasses the platform and user browsers directly read data from storage",
+      label: "使用预签名 URL（开）/ 平台代理访问（关）",
+      description: "启用预签名 URL 后，数据将绕过平台，由浏览器直接访问存储",
       schema: z.boolean().default(true),
       target: "import",
       resetConnection: false,
@@ -52,7 +51,7 @@ export const gcsProvider: ProviderConfig = {
     {
       name: "presign_ttl",
       type: "counter",
-      label: "Expire pre-signed URLs (minutes)",
+      label: "预签名 URL 过期时间（分钟）",
       min: 1,
       max: 10080,
       step: 1,

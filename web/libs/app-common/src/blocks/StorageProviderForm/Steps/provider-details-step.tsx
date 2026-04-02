@@ -25,7 +25,7 @@ export const ProviderDetailsStep = ({
   const providerConfig = getProviderConfig(provider);
 
   if (!provider || !providerConfig) {
-    return <div className="text-red-500">{!provider ? "No provider selected" : `Unknown provider: ${provider}`}</div>;
+    return <div className="text-red-500">{!provider ? "未选择存储提供方" : `未知存储提供方：${provider}`}</div>;
   }
 
   return (
@@ -41,7 +41,7 @@ export const ProviderDetailsStep = ({
           name="title"
           value={formData.title ?? ""}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleProviderFieldChange("title", e.target.value)}
-          placeholder="Enter a descriptive name (e.g., 'Legal Documents', 'Training Data')"
+          placeholder="请输入便于识别的名称（例如：法务文档、训练数据）"
           validate=""
           skip={false}
           labelProps={{}}
@@ -49,8 +49,8 @@ export const ProviderDetailsStep = ({
           tooltip=""
           tooltipIcon={null}
           required={true}
-          label="Storage Title"
-          description="This name will help you identify this connection in your project"
+          label="存储名称"
+          description="用于在项目中识别该连接"
           footer={errors.title ? <span className="text-negative-content">{errors.title}</span> : ""}
           className={errors.title ? "border-negative-content" : ""}
         />
@@ -73,9 +73,9 @@ export const ProviderDetailsStep = ({
             <Toggle
               checked={formData.can_delete_objects ?? false}
               onChange={(e) => handleProviderFieldChange("can_delete_objects", e.target.checked)}
-              aria-label="Can delete objects from storage"
-              label="Can delete objects from storage"
-              description="If unchecked, annotations will not be deleted from storage"
+              aria-label="允许从存储中删除对象"
+              label="允许从存储中删除对象"
+              description="关闭后，标注不会从存储中删除"
             />
           </div>
         </div>

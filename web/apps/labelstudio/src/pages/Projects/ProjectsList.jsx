@@ -83,9 +83,7 @@ const ProjectCard = ({ project }) => {
           <div className={cn("project-card").elem("title").toClassName()}>
             <div className={cn("project-card").elem("title-text-wrapper").toClassName()}>
               <Tooltip title={project.title ?? "新项目"}>
-                <div className={cn("project-card").elem("title-text").toClassName()}>
-                  {project.title ?? "新项目"}
-                </div>
+                <div className={cn("project-card").elem("title-text").toClassName()}>{project.title ?? "新项目"}</div>
               </Tooltip>
             </div>
 

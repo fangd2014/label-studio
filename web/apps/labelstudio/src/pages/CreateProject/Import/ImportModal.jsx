@@ -62,15 +62,7 @@ export const Inner = () => {
   }, [backToDM, finishUpload, sample]);
 
   return (
-    <Modal
-      title="导入数据"
-      ref={modal}
-      onHide={() => backToDM()}
-      closeOnClickOutside={false}
-      fullscreen
-      visible
-      bare
-    >
+    <Modal title="导入数据" ref={modal} onHide={() => backToDM()} closeOnClickOutside={false} fullscreen visible bare>
       <Modal.Header divided>
         <div className={cn("modal").elem("title").toClassName()}>导入数据</div>
 
