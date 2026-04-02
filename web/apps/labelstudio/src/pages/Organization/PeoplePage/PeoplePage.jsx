@@ -14,9 +14,11 @@ import { IconPlus } from "@humansignal/icons";
 import { useToast } from "@humansignal/ui";
 import { InviteLink } from "./InviteLink";
 import { SelectedUser } from "./SelectedUser";
+import { RoleMatrixDialog } from "./RoleMatrixDialog";
 
 export const PeoplePage = () => {
   const apiSettingsModal = useRef();
+  const roleMatrixModal = useRef();
   const toast = useToast();
   const [selectedUser, setSelectedUser] = useState(null);
   const [invitationOpen, setInvitationOpen] = useState(false);
@@ -34,12 +36,12 @@ export const PeoplePage = () => {
 
   const apiTokensSettingsModalProps = useMemo(
     () => ({
-      title: "API Token 设置",
+      title: "API 令牌设置",
       style: { width: 480 },
       body: () => (
         <TokenSettingsModal
           onSaved={() => {
-            toast.show({ message: "API Token 设置已保存" });
+            toast.show({ message: "API 令牌设置已保存" });
             apiSettingsModal.current?.close();
           }}
         />
@@ -53,6 +55,14 @@ export const PeoplePage = () => {
     __lsa("organization.token_settings");
   }, [apiTokensSettingsModalProps]);
 
+  const showRoleMatrixDialog = useCallback(() => {
+    roleMatrixModal.current = modal({
+      title: "角色权限矩阵",
+      style: { width: 860 },
+      body: () => <RoleMatrixDialog onClose={() => roleMatrixModal.current?.close()} />,
+    });
+  }, []);
+
   const defaultSelected = useMemo(() => {
     return localStorage.getItem("selectedUser");
   }, []);
@@ -65,10 +75,13 @@ export const PeoplePage = () => {
 
           <Space>
             {isFF(FF_AUTH_TOKENS) && (
-              <Button look="outlined" onClick={showApiTokenSettingsModal} aria-label="显示 API Token 设置">
-                API Token 设置
+              <Button look="outlined" onClick={showApiTokenSettingsModal} aria-label="显示 API 令牌设置">
+                API 令牌设置
               </Button>
             )}
+            <Button look="outlined" onClick={showRoleMatrixDialog} aria-label="显示角色矩阵">
+              角色矩阵
+            </Button>
             <Button
               leading={<IconPlus className="!h-4" />}
               onClick={() => setInvitationOpen(true)}

@@ -8,6 +8,7 @@ import { cn } from "../../utils/bem";
 import { HeidiTips } from "../../components/HeidiTips/HeidiTips";
 import { FF_LSDV_E_297, isFF } from "../../utils/feature-flags";
 import { createURL } from "../../components/HeidiTips/utils";
+import { Link } from "react-router-dom";
 
 export const GeneralSettings = () => {
   const { project, fetchProject } = useContext(ProjectContext);
@@ -123,6 +124,14 @@ export const GeneralSettings = () => {
                 保存
               </Button>
             </Form.Actions>
+
+            <div style={{ marginTop: 12, color: "#595959", fontSize: 13 }}>
+              企业能力（SSO/SCIM、质量护栏、协作深链）请前往
+              <Link style={{ marginLeft: 6 }} to={`/projects/${project.id}/settings/enterprise`}>
+                企业设置
+              </Link>
+              进行配置。
+            </div>
           </Form>
         </div>
       </div>

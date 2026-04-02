@@ -4,7 +4,7 @@ import { RouteWithStaticFallback } from "./RouteWithStaticFallback";
 
 export const ProjectRoutes = ({ content }) => {
   const routes = useRoutesMap();
-  const resolvedRoutes = resolveRoutes(routes, { content });
+  const resolvedRoutes = resolveRoutes(routes, { content, enterpriseEnabled: true });
 
   return resolvedRoutes ? <RouteWithStaticFallback path="/" children={resolvedRoutes} /> : null;
 };

@@ -103,6 +103,11 @@ export const API_CONFIG = {
     createProjectCollaborationComment: "POST:/projects/:projectId/collaboration/comments",
     updateCollaborationComment: "PATCH:/collaboration/comments/:commentId",
     projectDeepLink: "/projects/:projectId/collaboration/deep-link",
+
+    // Quality
+    projectQualityRules: "/projects/:projectId/quality/rules",
+    updateProjectQualityRules: "PATCH:/projects/:projectId/quality/rules",
+    projectAgreementMetrics: "/projects/:projectId/quality/agreement",
   },
   alwaysExpectJSON: false,
 };
