@@ -20,6 +20,12 @@ from users.serializers import HotkeysSerializer, UserSerializer, UserSerializerU
 
 logger = logging.getLogger(__name__)
 
+
+def issue_auth_payload(user):
+    token, _ = Token.objects.get_or_create(user=user)
+    user_payload = WhoAmIUserSerializer(user, context={'user': user}).data
+    return {'token': token.key, 'user': user_payload}
+
 _user_schema = {
     'type': 'object',
     'properties': {

@@ -217,6 +217,14 @@ class Workspace(models.Model):
         help_text='Creator user ID',
     )
     is_default = models.BooleanField(default=False, help_text='Whether this workspace is the organization default')
+    external_group_id = models.CharField(
+        _('external group id'),
+        max_length=255,
+        blank=True,
+        default='',
+        help_text='SCIM group identifier for workspace synchronization',
+        db_index=True,
+    )
     created_at = models.DateTimeField(_('created at'), auto_now_add=True)
     updated_at = models.DateTimeField(_('updated at'), auto_now=True)
 

@@ -146,6 +146,33 @@ class User(UserMixin, AbstractBaseUser, PermissionsMixin, UserLastActivityMixin)
         'organizations.Organization', null=True, on_delete=models.SET_NULL, related_name='active_users'
     )
 
+    identity_external_id = models.CharField(
+        _('identity external id'),
+        max_length=255,
+        blank=True,
+        null=True,
+        unique=True,
+        help_text=_('External identity ID from SAML/SCIM/LDAP provider'),
+    )
+    identity_provider = models.CharField(
+        _('identity provider'),
+        max_length=32,
+        blank=True,
+        default='',
+        help_text=_('Current source provider for identity synchronization'),
+    )
+    is_identity_managed = models.BooleanField(
+        _('is identity managed'),
+        default=False,
+        help_text=_('Whether this user account is managed by external identity provider'),
+    )
+    identity_synced_at = models.DateTimeField(
+        _('identity synced at'),
+        null=True,
+        blank=True,
+        help_text=_('Latest synchronization timestamp from identity provider'),
+    )
+
     allow_newsletters = models.BooleanField(
         _('allow newsletters'), null=True, default=None, help_text=_('Allow sending newsletters to user')
     )

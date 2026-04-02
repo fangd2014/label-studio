@@ -230,6 +230,7 @@ INSTALLED_APPS = [
     'fsm',  # MUST be before apps that register FSM transitions (projects, tasks)
     'core',
     'users',
+    'identity',
     'organizations',
     'data_import',
     'data_export',
@@ -308,10 +309,20 @@ ALLOWED_HOSTS = get_env_list('ALLOWED_HOSTS', default=['*'])
 
 # Auth modules
 AUTH_USER_MODEL = 'users.User'
+
+IDENTITY_SAML_ENABLED = get_bool_env('IDENTITY_SAML_ENABLED', True)
+IDENTITY_SCIM_ENABLED = get_bool_env('IDENTITY_SCIM_ENABLED', True)
+LDAP_ENABLED = get_bool_env('LDAP_ENABLED', False)
+LDAP_SERVER_URI = get_env('LDAP_SERVER_URI', '')
+LDAP_BIND_DN = get_env('LDAP_BIND_DN', '')
+LDAP_BIND_PASSWORD = get_env('LDAP_BIND_PASSWORD', '')
+
 AUTHENTICATION_BACKENDS = [
     'rules.permissions.ObjectPermissionBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
+if LDAP_ENABLED:
+    AUTHENTICATION_BACKENDS.insert(0, 'django_auth_ldap.backend.LDAPBackend')
 USE_USERNAME_FOR_LOGIN = False
 
 DISABLE_SIGNUP_WITHOUT_LINK = get_bool_env('DISABLE_SIGNUP_WITHOUT_LINK', False)
