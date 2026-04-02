@@ -233,6 +233,7 @@ INSTALLED_APPS = [
     'identity',
     'quality',
     'collaboration',
+    'prompts_enterprise',
     'organizations',
     'data_import',
     'data_export',
@@ -318,6 +319,7 @@ LDAP_ENABLED = get_bool_env('LDAP_ENABLED', False)
 LDAP_SERVER_URI = get_env('LDAP_SERVER_URI', '')
 LDAP_BIND_DN = get_env('LDAP_BIND_DN', '')
 LDAP_BIND_PASSWORD = get_env('LDAP_BIND_PASSWORD', '')
+PROMPTS_ENTERPRISE_ENABLED = get_bool_env('PROMPTS_ENTERPRISE_ENABLED', False)
 
 AUTHENTICATION_BACKENDS = [
     'rules.permissions.ObjectPermissionBackend',

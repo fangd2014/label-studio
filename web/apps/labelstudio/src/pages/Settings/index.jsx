@@ -18,6 +18,7 @@ export const MenuLayout = ({ children, ...routeProps }) => {
         LabelingSettings,
         AnnotationSettings,
         EnterpriseSettings,
+        ["/enterprise?tab=prompts", "Prompts 企业"],
         MachineLearningSettings,
         PredictionsSettings,
         StorageSettings,

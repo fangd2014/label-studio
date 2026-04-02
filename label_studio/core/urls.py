@@ -65,6 +65,7 @@ urlpatterns = [
     re_path(r'^', include('identity.urls')),
     re_path(r'^', include('quality.urls')),
     re_path(r'^', include('collaboration.urls')),
+    re_path(r'^', include('prompts_enterprise.urls')),
     re_path(r'^', include('tasks.urls')),
     re_path(r'^', include('io_storages.urls')),
     re_path(r'^', include('ml.urls')),

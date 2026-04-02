@@ -108,6 +108,10 @@ export const API_CONFIG = {
     projectQualityRules: "/projects/:projectId/quality/rules",
     updateProjectQualityRules: "PATCH:/projects/:projectId/quality/rules",
     projectAgreementMetrics: "/projects/:projectId/quality/agreement",
+
+    // Prompts Enterprise
+    promptsEnterpriseConfig: "/prompts-enterprise/config",
+    updatePromptsEnterpriseConfig: "POST:/prompts-enterprise/config",
   },
   alwaysExpectJSON: false,
 };

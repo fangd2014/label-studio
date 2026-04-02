@@ -13,6 +13,7 @@ export const EnterpriseSettings = () => {
   const [reviewRequired, setReviewRequired] = useState(true);
   const [lowTrustThreshold, setLowTrustThreshold] = useState("0.30");
   const [agreement, setAgreement] = useState(null);
+  const [promptsEnabled, setPromptsEnabled] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const enterpriseEnabled = useMemo(() => isEnterpriseEdition(), []);
@@ -26,11 +27,13 @@ export const EnterpriseSettings = () => {
     const agreementResponse = await api.callApi("projectAgreementMetrics", {
       params: { projectId: project.id },
     });
+    const promptsResponse = await api.callApi("promptsEnterpriseConfig");
 
     setAutoValidation(Boolean(rulesResponse?.quality_rules?.auto_validation));
     setReviewRequired((rulesResponse?.quality_rules?.low_agreement_action ?? "review_required") === "review_required");
     setLowTrustThreshold(String(rulesResponse?.low_trust_threshold ?? 0.3));
     setAgreement(agreementResponse ?? null);
+    setPromptsEnabled(Boolean(promptsResponse?.enabled));
   }, [api, project?.id]);
 
   useEffect(() => {
@@ -57,6 +60,14 @@ export const EnterpriseSettings = () => {
     });
     setSaving(false);
     loadData();
+  };
+
+  const togglePrompts = async () => {
+    const nextValue = !promptsEnabled;
+    await api.callApi("updatePromptsEnterpriseConfig", {
+      body: { enabled: nextValue },
+    });
+    setPromptsEnabled(nextValue);
   };
 
   return (
@@ -102,6 +113,19 @@ export const EnterpriseSettings = () => {
         <div className={cn("enterprise-settings").elem("hint").toClassName()}>
           指标：{agreement?.metric ?? "exact_match_consensus"}，得分：{agreement?.score ?? "-"}，评估任务数：
           {agreement?.tasks_evaluated ?? 0}
+        </div>
+      </section>
+
+      <section className={cn("enterprise-settings").elem("section").toClassName()}>
+        <div className={cn("enterprise-settings").elem("title").toClassName()}>Prompts 企业能力</div>
+        <div className={cn("enterprise-settings").elem("hint").toClassName()}>
+          用于 LLM 预标注、生成任务与审核辅助的企业 Prompt 模板能力。
+        </div>
+        <div className={cn("enterprise-settings").elem("line").toClassName()}>
+          <span>当前状态：{promptsEnabled ? "已启用" : "未启用"}</span>
+          <Button look="outlined" onClick={togglePrompts} aria-label="切换 Prompts 企业能力">
+            {promptsEnabled ? "关闭 Prompts" : "启用 Prompts"}
+          </Button>
         </div>
       </section>
 
