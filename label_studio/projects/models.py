@@ -286,6 +286,17 @@ class Project(ProjectMixin, FsmHistoryStateModel):
         'and the first label Car should be twice more important than Airplaine, then you have to need the specify: '
         "{'my_bbox': {'type': 'RectangleLabels', 'labels': {'Car': 1.0, 'Airplaine': 0.5}, 'overall': 0.33}",
     )
+    quality_rules = JSONField(
+        _('quality rules'),
+        null=True,
+        default=dict,
+        help_text='Quality guardrails and agreement strategies for enterprise workflows',
+    )
+    low_trust_threshold = models.FloatField(
+        _('low trust threshold'),
+        default=0.0,
+        help_text='Annotator trust score threshold (0.0-1.0) for quality guardrails',
+    )
 
     # Welcome reader! You might be wondering how `model_version` is
     # set and used; let's explain. `model_version` can either be set

@@ -231,6 +231,7 @@ INSTALLED_APPS = [
     'core',
     'users',
     'identity',
+    'quality',
     'organizations',
     'data_import',
     'data_export',

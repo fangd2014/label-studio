@@ -310,6 +310,8 @@ class ProjectCountsListAPI(generics.ListAPIView):
                             'task_data_login': 'user',
                             'task_data_password': 'secret',
                             'control_weights': {},
+                            'quality_rules': {'auto_validation': True, 'low_agreement_action': 'review_required'},
+                            'low_trust_threshold': 0.35,
                             'parsed_label_config': '{"tag": {...}}',
                             'evaluate_predictions_automatically': False,
                             'config_has_control_tags': True,

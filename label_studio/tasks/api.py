@@ -190,9 +190,11 @@ class TaskListAPI(DMTaskListAPI):
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        project_id = self.request.data.get('project')
+        project_id = self.request.data.get('project') or self.request.query_params.get('project')
         if project_id:
-            context['project'] = generics.get_object_or_404(Project, pk=project_id)
+            project = generics.get_object_or_404(Project, pk=project_id)
+            context['project'] = project
+            context['quality_rules'] = project.quality_rules or {}
         return context
 
     def perform_create(self, serializer):

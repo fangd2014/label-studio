@@ -525,6 +525,8 @@ class ProjectStateAPI(APIView):
                 'task_count': project.tasks.count(),
                 'annotation_count': Annotation.objects.filter(project=project).count(),
                 'config_has_control_tags': len(project.get_parsed_config()) > 0,
+                'quality_rules': project.quality_rules or {},
+                'low_trust_threshold': project.low_trust_threshold,
             }
         )
         return Response(data)

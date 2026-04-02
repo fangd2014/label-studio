@@ -276,6 +276,11 @@ class ProjectSerializer(FlexFieldsModelSerializer):
             raise serializers.ValidationError('At least one tag must have a non-zero overall weight.')
         return value
 
+    def validate_low_trust_threshold(self, value):
+        if value < 0 or value > 1:
+            raise serializers.ValidationError('低信任阈值必须在 0 到 1 之间')
+        return value
+
     class Meta:
         model = Project
         extra_kwargs = {
@@ -320,6 +325,8 @@ class ProjectSerializer(FlexFieldsModelSerializer):
             'task_data_login',
             'task_data_password',
             'control_weights',
+            'quality_rules',
+            'low_trust_threshold',
             'parsed_label_config',
             'evaluate_predictions_automatically',
             'config_has_control_tags',
