@@ -13,6 +13,8 @@ export const API_CONFIG = {
     // Organization
     memberships: "/organizations/:pk/memberships",
     userMemberships: "/organizations/:pk/memberships/:userPk",
+    organizationWorkspaces: "/organizations/:pk/workspaces",
+    createOrganizationWorkspace: "POST:/organizations/:pk/workspaces",
     inviteLink: "/invite",
     resetInviteLink: "POST:/invite/reset-token",
 

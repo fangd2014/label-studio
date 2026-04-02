@@ -1,0 +1,62 @@
+.workspace-page {
+  max-width: 58rem;
+}
+
+.workspace-page__header {
+  margin-bottom: 16px;
+}
+
+.workspace-page__form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.workspace-page__input,
+.workspace-page__textarea {
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+.workspace-page__textarea {
+  min-height: 72px;
+  resize: vertical;
+}
+
+.workspace-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.workspace-page__item {
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.workspace-page__item-title {
+  font-weight: 600;
+}
+
+.workspace-page__badge {
+  margin-left: 8px;
+  color: #0f6bff;
+  font-size: 12px;
+}
+
+.workspace-page__item-description {
+  margin-top: 4px;
+  color: #595959;
+  font-size: 13px;
+}
+
+.workspace-page__empty {
+  color: #8c8c8c;
+  font-size: 14px;
+}
