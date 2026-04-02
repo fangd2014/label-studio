@@ -112,6 +112,10 @@ export const API_CONFIG = {
     // Prompts Enterprise
     promptsEnterpriseConfig: "/prompts-enterprise/config",
     updatePromptsEnterpriseConfig: "POST:/prompts-enterprise/config",
+
+    // Branding
+    brandingConfig: "/branding/config",
+    updateBrandingConfig: "POST:/branding/config",
   },
   alwaysExpectJSON: false,
 };

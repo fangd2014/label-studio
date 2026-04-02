@@ -2,6 +2,7 @@
 
 import { createBrowserHistory } from "history";
 import { render } from "react-dom";
+import { useEffect } from "react";
 import { Router } from "react-router-dom";
 import { LEAVE_BLOCKER_KEY, leaveBlockerCallback } from "../components/LeaveBlocker/LeaveBlocker";
 import { initSentry } from "../config/Sentry";
@@ -56,6 +57,35 @@ window.LSH = browserHistory;
 
 initSentry(browserHistory);
 
+const BrandingInitializer = () => {
+  const api = useAPI();
+
+  useEffect(() => {
+    let active = true;
+
+    const initializeBranding = async () => {
+      const branding = await api.callApi("brandingConfig");
+      if (!active || !branding) return;
+
+      window.APP_SETTINGS.branding = branding;
+      if (branding.product_name) {
+        document.title = branding.product_name;
+      }
+      if (branding.primary_color) {
+        document.documentElement.style.setProperty("--brand-primary", branding.primary_color);
+      }
+    };
+
+    initializeBranding();
+
+    return () => {
+      active = false;
+    };
+  }, [api]);
+
+  return null;
+};
+
 const App = ({ content }) => {
   return (
     <ErrorBoundary>
@@ -75,6 +105,7 @@ const App = ({ content }) => {
           ].filter(Boolean)}
         >
           <AsyncPage>
+            <BrandingInitializer />
             <DraftGuard />
             <RootPage content={content} />
             <ToastViewport />

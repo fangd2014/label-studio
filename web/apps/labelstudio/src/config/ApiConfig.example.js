@@ -136,5 +136,15 @@ export const API_CONFIG = {
         return response;
       },
     },
+    brandingConfig: {
+      path: "/branding/config",
+      mock: () => ({
+        product_name: "企业智能标注平台",
+        logo_url: "",
+        primary_color: "#1D4ED8",
+        login_page_url: "",
+        support_url: "https://example.com/support",
+      }),
+    },
   },
 };

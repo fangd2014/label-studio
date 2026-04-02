@@ -234,6 +234,7 @@ INSTALLED_APPS = [
     'quality',
     'collaboration',
     'prompts_enterprise',
+    'branding',
     'organizations',
     'data_import',
     'data_export',
@@ -320,6 +321,11 @@ LDAP_SERVER_URI = get_env('LDAP_SERVER_URI', '')
 LDAP_BIND_DN = get_env('LDAP_BIND_DN', '')
 LDAP_BIND_PASSWORD = get_env('LDAP_BIND_PASSWORD', '')
 PROMPTS_ENTERPRISE_ENABLED = get_bool_env('PROMPTS_ENTERPRISE_ENABLED', False)
+BRANDING_PRODUCT_NAME = get_env('BRANDING_PRODUCT_NAME', 'Label Studio')
+BRANDING_LOGO_URL = get_env('BRANDING_LOGO_URL', '')
+BRANDING_PRIMARY_COLOR = get_env('BRANDING_PRIMARY_COLOR', '#0F172A')
+LOGIN_PAGE_URL = get_env('LOGIN_PAGE_URL', '')
+BRANDING_SUPPORT_URL = get_env('BRANDING_SUPPORT_URL', '')
 
 AUTHENTICATION_BACKENDS = [
     'rules.permissions.ObjectPermissionBackend',

@@ -43,6 +43,8 @@ def main(request):
             return redirect(reverse('projects:project-index'))
 
     # not authenticated
+    if settings.LOGIN_PAGE_URL:
+        return redirect(settings.LOGIN_PAGE_URL)
     return redirect(reverse('user-login'))
 
 
