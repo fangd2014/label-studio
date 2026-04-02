@@ -88,7 +88,7 @@ export const Table = observer(
           indeterminate={selectedItems.isIndeterminate}
           onChange={() => props.onSelectAll()}
           className="select-all"
-          ariaLabel={`${selectedItems.isAllSelected ? "Unselect" : "Select"} all rows`}
+          ariaLabel={`${selectedItems.isAllSelected ? "取消全选" : "全选"}所有行`}
         />
       );
     }, [props.onSelectAll, selectedItems]);
@@ -122,7 +122,7 @@ export const Table = observer(
               // Always remember last clicked for shift-click range
               lastClickedId.current = rowData.id;
             }}
-            ariaLabel={`${isChecked ? "Unselect" : "Select"} Task ${rowData.id}`}
+            ariaLabel={`${isChecked ? "取消选择" : "选择"}任务 ${rowData.id}`}
           />
         );
       },
@@ -186,7 +186,7 @@ export const Table = observer(
             className="w-6 h-6 p-0 text-primary-content hover:text-primary-content-hover"
             onClick={() => {
               const modalInstance = modal({
-                title: `Source for task ${out?.id}`,
+                title: `任务 ${out?.id} 的源数据`,
                 style: { width: 900 },
                 header: null, // Will be set by renderToggle
                 body: (
@@ -204,7 +204,7 @@ export const Table = observer(
               });
             }}
             leading={<Icon icon={IconBraces} />}
-            tooltip="View Task Source"
+            tooltip="查看任务源数据"
           />
         );
       },
@@ -286,9 +286,9 @@ export const Table = observer(
         <div className={cn("table-toolbar").mod({ visible: toolbarVisible }).toClassName()}>
           <FieldsButton
             multiSelect={true}
-            title={"Columns"}
+            title={"列"}
             size="small"
-            tooltip={"Customize Columns"}
+            tooltip={"自定义列"}
             data-testid="columns-picker-quickview"
           />
           <DensityToggle size="small" onChange={onDensityChange} data-testid="density-toggle-quickview" />

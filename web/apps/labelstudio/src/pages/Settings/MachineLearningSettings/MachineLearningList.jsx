@@ -1,4 +1,5 @@
 import { formatDistanceToNow, format, parseISO } from "date-fns";
+import { zhCN } from "date-fns/locale";
 import { useCallback, useContext } from "react";
 
 import truncate from "truncate-middle";
@@ -99,6 +100,7 @@ const BackendCard = ({ backend, onStartTrain, onEdit, onDelete, onTestRequest })
               创建于&nbsp;
               {formatDistanceToNow(parseISO(backend.created_at), {
                 addSuffix: true,
+                locale: zhCN,
               })}
             </span>
           </Tooltip>

@@ -37,7 +37,7 @@ const WebhookListItem = ({ webhook, onSelectActive, onActiveChange, onDelete, ca
           </div>
         </div>
         <div className="text-neutral-content-subtler text-sm mt-1">
-          创建于 {format(new Date(webhook.created_at), "dd MMM yyyy, HH:mm")}
+          创建于 {format(new Date(webhook.created_at), "yyyy-MM-dd HH:mm")}
         </div>
       </div>
       {canChangeWebhooks && (
@@ -88,11 +88,11 @@ const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) 
     <>
       <header className="mb-base">
         <Typography variant="headline" size="medium" className="mb-tight">
-          Webhook
+          回调（Webhook）
         </Typography>
         {webhooks.length > 0 && (
           <Typography size="small" className="text-neutral-content-subtler">
-            使用 Webhook 配置事件订阅集成。当事件触发时，{"app name"} 会向配置的 Webhook URL 发送 HTTP POST 请求。
+            使用 Webhook 配置事件订阅。当事件触发时，系统会向配置的 Webhook URL 发送 HTTP POST 请求。
           </Typography>
         )}
       </header>
@@ -103,16 +103,16 @@ const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) 
               size="medium"
               variant="primary"
               icon={<IconWebhook />}
-              title="添加第一个 Webhook"
-              description="使用 Webhook 配置事件订阅集成。当事件触发时，Label Studio 会向配置的 Webhook URL 发送 HTTP POST 请求。"
+              title="添加第一个回调"
+              description="使用 Webhook 配置事件订阅。当事件触发时，系统会向配置的 Webhook URL 发送 HTTP POST 请求。"
               actions={
                 canChangeWebhooks ? (
                   <Button variant="primary" look="filled" onClick={onAddWebhook}>
-                    添加 Webhook
+                    添加回调
                   </Button>
                 ) : (
                   <Typography variant="body" size="small">
-                    请联系管理员创建 Webhook
+                    请联系管理员创建回调
                   </Typography>
                 )
               }
@@ -157,7 +157,7 @@ const WebhookList = ({ onSelectActive, onAddWebhook, webhooks, fetchWebhooks }) 
       {webhooks.length > 0 && canChangeWebhooks && (
         <div className="flex justify-end w-full mt-base">
           <Button variant="primary" look="filled" onClick={onAddWebhook}>
-            添加 Webhook
+            添加回调
           </Button>
         </div>
       )}

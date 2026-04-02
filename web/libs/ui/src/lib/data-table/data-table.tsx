@@ -264,7 +264,7 @@ export const DataTable = <T extends DataShape>(props: DataTableProps<T>) => {
                 // Update selection state in one go
                 table.setRowSelection(newSelection);
               }}
-              ariaLabel={isAllSelected ? "Unselect all rows" : "Select all rows"}
+              ariaLabel={isAllSelected ? "取消全选所有行" : "全选所有行"}
               data-testid="data-table-select-all"
             />
           </label>
@@ -289,7 +289,7 @@ export const DataTable = <T extends DataShape>(props: DataTableProps<T>) => {
                 e.stopPropagation();
                 row.toggleSelected(e.target.checked);
               }}
-              ariaLabel={row.getIsSelected() ? "Unselect row" : "Select row"}
+              ariaLabel={row.getIsSelected() ? "取消选择此行" : "选择此行"}
               data-testid={`data-table-row-${row.id}-select`}
             />
           </label>

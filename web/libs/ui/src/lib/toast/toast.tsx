@@ -27,7 +27,7 @@ interface ToastProviderWithTypes extends ToastPrimitive.ToastProviderProps {
 export const ToastViewport: FC<ToastViewportProps> = ({ hotkey, label, ...props }) => {
   return (
     <div className={styles["toast-viewport"]} {...props}>
-      <ToastPrimitive.Viewport hotkey={hotkey} label={label} />
+      <ToastPrimitive.Viewport hotkey={hotkey} label={label ?? "通知"} />
     </div>
   );
 };
@@ -70,7 +70,7 @@ export const Toast: FC<ToastProps> = ({
         {action}
         {closeable && (
           <ToastPrimitive.Close asChild>
-            <div className={clsx(styles.toast__close)} aria-label="Close">
+            <div className={clsx(styles.toast__close)} aria-label="关闭通知">
               <span aria-hidden>
                 <IconCross />
               </span>

@@ -13,7 +13,7 @@ export const WebhookDeleteModal = ({ onDelete }) => {
       return (
         <div className={rootClass}>
           <div className={rootClass.elem("modal-text").toClassName()}>
-            确认要删除该 Webhook 吗？此操作无法撤销。
+            确认要删除该回调吗？此操作无法撤销。
           </div>
         </div>
       );
@@ -28,7 +28,7 @@ export const WebhookDeleteModal = ({ onDelete }) => {
             onClick={() => {
               ctrl.hide();
             }}
-            aria-label="取消删除 Webhook"
+            aria-label="取消删除回调"
           >
             取消
           </Button>
@@ -38,9 +38,9 @@ export const WebhookDeleteModal = ({ onDelete }) => {
               await onDelete();
               ctrl.hide();
             }}
-            aria-label="确认删除 Webhook"
+            aria-label="确认删除回调"
           >
-            删除 Webhook
+            删除回调
           </Button>
         </Space>
       );

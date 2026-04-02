@@ -1,5 +1,5 @@
 import { format, isValid } from "date-fns";
-export const dateTimeFormat = "MMM dd yyyy, HH:mm:ss";
+export const dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
 export const DateTimeCell = (column) => {
   const date = new Date(column.value);

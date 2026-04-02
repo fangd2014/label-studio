@@ -1,6 +1,7 @@
 import { useCallback, useContext } from "react";
 
 import { format, formatDistanceToNow, parseISO } from "date-fns";
+import { zhCN } from "date-fns/locale";
 import { Menu } from "../../../components";
 import { Button, Dropdown } from "@humansignal/ui";
 import { IconInfoOutline, IconPredictions, IconEllipsis } from "@humansignal/icons";
@@ -77,6 +78,7 @@ const VersionCard = ({ version, selected, onSelect, editable, onDelete }) => {
               <span>
                 {formatDistanceToNow(parseISO(version.latest), {
                   addSuffix: true,
+                  locale: zhCN,
                 })}
               </span>
             </Tooltip>

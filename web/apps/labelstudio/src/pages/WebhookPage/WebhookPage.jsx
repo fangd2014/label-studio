@@ -18,7 +18,7 @@ const Webhook = () => {
   const api = useAPI();
   const { project } = useProject();
 
-  useUpdatePageTitle(createTitleFromSegments([project?.title, "Webhook 设置"]));
+  useUpdatePageTitle(createTitleFromSegments([project?.title, "回调设置"]));
 
   const projectId = useMemo(() => {
     if (history.location.pathname.startsWith("/projects")) {
@@ -113,7 +113,7 @@ const Webhook = () => {
 };
 
 export const WebhookPage = {
-  title: "Webhook",
+  title: "回调",
   path: "/webhooks",
   component: Webhook,
 };

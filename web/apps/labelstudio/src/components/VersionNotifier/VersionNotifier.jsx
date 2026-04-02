@@ -29,7 +29,7 @@ export const VersionProvider = ({ children }) => {
           version: data.version,
           latestVersion: data.latest_version_from_pypi,
           newVersion: data.current_version_is_outdated,
-          updateTime: format(new Date(data.latest_version_upload_time), "MMM d"),
+          updateTime: format(new Date(data.latest_version_upload_time), "yyyy-MM-dd"),
         },
       });
     }
@@ -54,9 +54,9 @@ export const VersionNotifier = ({ showNewVersion, showCurrentVersion }) => {
         </div>
         <div className={cn("version-notifier").elem("content").toClassName()}>
           <div className={cn("version-notifier").elem("title").toClassName()} data-date={updateTime}>
-            {latestVersion} Available
+            {latestVersion} 可用更新
           </div>
-          <div className={cn("version-notifier").elem("description").toClassName()}>Current version: {version}</div>
+          <div className={cn("version-notifier").elem("description").toClassName()}>当前版本：{version}</div>
         </div>
       </a>
     </li>

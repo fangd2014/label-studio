@@ -175,7 +175,7 @@ const WebhookForm = ({
             type="button"
             variant="negative"
             look="outlined"
-            aria-label="删除 Webhook"
+            aria-label="删除回调"
             onClick={() =>
               WebhookDeleteModal({
                 onDelete: async () => {
@@ -188,7 +188,7 @@ const WebhookForm = ({
               })
             }
           >
-            删除 Webhook
+            删除回调
           </Button>
         )}
         <div className={rootClass.elem("status").toClassName()}>
@@ -200,15 +200,15 @@ const WebhookForm = ({
           type="button"
           className="ml-auto"
           onClick={onBack}
-          aria-label="取消编辑 Webhook"
+          aria-label="取消编辑回调"
         >
           取消
         </Button>
         <Button
           className={rootClass.elem("save-button").toClassName()}
-          aria-label={webhook === null ? "添加 Webhook" : "保存更改"}
+          aria-label={webhook === null ? "添加回调" : "保存更改"}
         >
-          {webhook === null ? "添加 Webhook" : "保存更改"}
+          {webhook === null ? "添加回调" : "保存更改"}
         </Button>
       </div>
     </Form>
@@ -318,10 +318,10 @@ const WebhookDetail = ({ webhook, webhooksInfo, fetchWebhooks, onBack, onSelectA
           onClick={() => onSelectActive(null)}
           className="cursor-pointer text-neutral-content-subtler hover:text-neutral-content-subtle"
         >
-          Webhook
+          回调
         </Typography>
         <Typography variant="headline" size="medium" className="text-neutral-content-subtler">
-          / {webhook === null ? "新建 Webhook" : "编辑 Webhook"}
+          / {webhook === null ? "新建回调" : "编辑回调"}
         </Typography>
       </header>
       <div className="mt-base">

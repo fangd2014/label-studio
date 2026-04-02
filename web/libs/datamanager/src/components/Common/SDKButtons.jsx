@@ -1,6 +1,12 @@
 import { useSDK } from "../../providers/SDKProvider";
 import { Button } from "@humansignal/ui";
 
+const ariaLabelMap = {
+  settingsClicked: "设置按钮",
+  importClicked: "导入按钮",
+  exportClicked: "导出按钮",
+};
+
 const SDKButton = ({ eventName, testId, ...props }) => {
   const sdk = useSDK();
 
@@ -10,7 +16,7 @@ const SDKButton = ({ eventName, testId, ...props }) => {
       size={props.size ?? "small"}
       look={props.look ?? "outlined"}
       variant={props.variant ?? "neutral"}
-      aria-label={`${eventName.replace("Clicked", "")} button`}
+      aria-label={ariaLabelMap[eventName] ?? `${eventName.replace("Clicked", "")} 按钮`}
       data-testid={testId}
       onClick={() => {
         sdk.invoke(eventName);
