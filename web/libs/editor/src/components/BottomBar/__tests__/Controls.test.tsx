@@ -2,12 +2,14 @@ import { render, fireEvent } from "@testing-library/react";
 import { Provider } from "mobx-react";
 import { Controls } from "../Controls";
 
+const SKIP_COMMENT_TOOLTIP = /Please enter a comment before skipping|跳过前请先填写评论/;
+
 jest.mock("@humansignal/ui", () => {
   const { forwardRef } = jest.requireActual("react");
   return {
-    Button: forwardRef(({ children, ...props }: { children: React.ReactNode }) => {
+    Button: forwardRef(({ children, ...props }: { children: React.ReactNode }, ref: React.Ref<HTMLButtonElement>) => {
       return (
-        <button {...props} data-testid="button">
+        <button {...props} ref={ref} data-testid="button">
           {children}
         </button>
       );
@@ -104,7 +106,7 @@ describe("Controls", () => {
 
     expect(mockStore.skipTask).not.toHaveBeenCalled();
     expect(mockStore.commentStore.commentFormSubmit).not.toHaveBeenCalled();
-    expect(mockStore.commentStore.setTooltipMessage).toHaveBeenCalledWith("Please enter a comment before skipping");
+    expect(mockStore.commentStore.setTooltipMessage).toHaveBeenCalledWith(expect.stringMatching(SKIP_COMMENT_TOOLTIP));
   });
 
   test("When skip button is clicked, but there is an empty message on currentComment and annotators must leave a comment on skip, it must not submit and setToolTipMessage", () => {
@@ -122,7 +124,7 @@ describe("Controls", () => {
 
     expect(mockStore.skipTask).not.toHaveBeenCalled();
     expect(mockStore.commentStore.commentFormSubmit).not.toHaveBeenCalled();
-    expect(mockStore.commentStore.setTooltipMessage).toHaveBeenCalledWith("Please enter a comment before skipping");
+    expect(mockStore.commentStore.setTooltipMessage).toHaveBeenCalledWith(expect.stringMatching(SKIP_COMMENT_TOOLTIP));
   });
 
   test("When skip button is clicked, if there is no currentComment and annotators doesn't need to leave a comment on skip, it must submit", async () => {

@@ -237,7 +237,7 @@ describe("humanDateDiff", () => {
   it("returns string for date", () => {
     const d = new Date();
     d.setMinutes(d.getMinutes() - 2);
-    expect(humanDateDiff(d.getTime())).toMatch(/\d+\s+(minute|second)s?\s+ago|just now/);
+    expect(humanDateDiff(d.getTime())).toMatch(/\d+\s+(minute|second)s?\s+ago|just now|\d+\s*(分钟|秒)前|刚刚/);
   });
   it("returns a string (e.g. just now or N minutes ago)", () => {
     const d = new Date();

@@ -2,6 +2,17 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { Relations, Info } from "../DetailsPanel";
 
+const I18N = {
+  relationsHeader: /Create relations between regions|创建区域关系/,
+  relationsDescription: /Link regions to define relationships between them|连接区域以定义它们之间的关系/,
+  learnMore: /Learn more|了解更多/,
+  relationsCount: /Relations \(3\)|关系（3）/,
+  relationsPrefix: /Relations \(|关系（/,
+  infoHeader: /View region details|查看区域详情/,
+  infoDescription:
+    /Select a region to view its properties, metadata and available actions|选择一个区域以查看其属性、元数据和可用操作/,
+};
+
 // Mock the dependencies
 jest.mock("../../../../utils/bem", () => ({
   cn: (block: string) => ({
@@ -121,7 +132,7 @@ describe("DetailsPanel", () => {
 
         const header = screen.getByTestId("empty-state-header");
         expect(header).toBeInTheDocument();
-        expect(header).toHaveTextContent("Create relations between regions");
+        expect(header).toHaveTextContent(I18N.relationsHeader);
       });
 
       it("renders empty state with correct description", () => {
@@ -129,7 +140,7 @@ describe("DetailsPanel", () => {
 
         const description = screen.getByTestId("empty-state-description");
         expect(description).toBeInTheDocument();
-        expect(description).toHaveTextContent("Link regions to define relationships between them");
+        expect(description).toHaveTextContent(I18N.relationsDescription);
       });
 
       it("renders learn more link with correct attributes", () => {
@@ -143,7 +154,7 @@ describe("DetailsPanel", () => {
         );
         expect(learnMoreLink).toHaveAttribute("target", "_blank");
         expect(learnMoreLink).toHaveAttribute("rel", "noopener noreferrer");
-        expect(learnMoreLink).toHaveTextContent("Learn more");
+        expect(learnMoreLink).toHaveTextContent(I18N.learnMore);
       });
 
       it("does not render relations controls when no relations exist", () => {
@@ -156,7 +167,7 @@ describe("DetailsPanel", () => {
       it("does not render relations count header when no relations exist", () => {
         render(<Relations currentEntity={mockCurrentEntityWithoutRelations} />);
 
-        expect(screen.queryByText(/Relations \(/)).not.toBeInTheDocument();
+        expect(screen.queryByText(I18N.relationsPrefix)).not.toBeInTheDocument();
       });
     });
 
@@ -177,7 +188,7 @@ describe("DetailsPanel", () => {
       it("renders relations count in header when relations exist", () => {
         render(<Relations currentEntity={mockCurrentEntityWithRelations} />);
 
-        expect(screen.getByText("Relations (3)")).toBeInTheDocument();
+        expect(screen.getByText(I18N.relationsCount)).toBeInTheDocument();
       });
     });
   });
@@ -214,7 +225,7 @@ describe("DetailsPanel", () => {
 
         const header = screen.getByTestId("empty-state-header");
         expect(header).toBeInTheDocument();
-        expect(header).toHaveTextContent("View region details");
+        expect(header).toHaveTextContent(I18N.infoHeader);
       });
 
       it("renders empty state with correct description when no selection", () => {
@@ -222,7 +233,7 @@ describe("DetailsPanel", () => {
 
         const description = screen.getByTestId("empty-state-description");
         expect(description).toBeInTheDocument();
-        expect(description).toHaveTextContent("Select a region to view its properties, metadata and available actions");
+        expect(description).toHaveTextContent(I18N.infoDescription);
       });
 
       it("does not render region details on info panel when no selection", () => {
