@@ -97,6 +97,12 @@ export const API_CONFIG = {
 
     // FSM
     fsmStateHistory: "GET:/fsm/entities/:entityType/:entityId/history",
+
+    // Collaboration
+    projectCollaborationComments: "/projects/:projectId/collaboration/comments",
+    createProjectCollaborationComment: "POST:/projects/:projectId/collaboration/comments",
+    updateCollaborationComment: "PATCH:/collaboration/comments/:commentId",
+    projectDeepLink: "/projects/:projectId/collaboration/deep-link",
   },
   alwaysExpectJSON: false,
 };

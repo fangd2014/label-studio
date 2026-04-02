@@ -3,6 +3,7 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "r
 import { generatePath, useHistory } from "react-router";
 import { Link, NavLink } from "react-router-dom";
 import { Spinner } from "../../components";
+import { CopyableTooltip } from "../../components/CopyableTooltip/CopyableTooltip";
 import { modal } from "../../components/Modal/Modal";
 import { Space } from "../../components/Space/Space";
 import { useAPI } from "../../providers/ApiProvider";
@@ -239,8 +240,10 @@ DataManagerPage.pages = {
   ImportModal,
 };
 DataManagerPage.context = ({ dmRef }) => {
+  const api = useAPI();
   const { project } = useProject();
   const [mode, setMode] = useState(dmRef?.mode ?? "explorer");
+  const [deepLink, setDeepLink] = useState("");
 
   const links = {
     "/settings": "设置",
@@ -288,6 +291,23 @@ DataManagerPage.context = ({ dmRef }) => {
     };
   }, [dmRef, project]);
 
+  const fetchDeepLink = useCallback(async () => {
+    if (!project?.id) return;
+
+    const response = await api.callApi("projectDeepLink", {
+      params: {
+        projectId: project.id,
+      },
+    });
+    const relative = response?.deep_link || `/projects/${project.id}/data`;
+    const absolute = relative.startsWith("http") ? relative : `${window.location.origin}${relative}`;
+    setDeepLink(absolute);
+  }, [api, project?.id]);
+
+  useEffect(() => {
+    fetchDeepLink();
+  }, [fetchDeepLink]);
+
   return project && project.id ? (
     <Space size="small">
       {project.expert_instruction && mode !== "explorer" && (
@@ -322,6 +342,14 @@ DataManagerPage.context = ({ dmRef }) => {
           {label}
         </Link>
       ))}
+
+      {deepLink ? (
+        <CopyableTooltip title="复制当前项目深链" copiedTitle="深链已复制" textForCopy={deepLink}>
+          <Button size="small" look="outlined">
+            复制深链
+          </Button>
+        </CopyableTooltip>
+      ) : null}
     </Space>
   ) : null;
 };

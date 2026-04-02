@@ -232,6 +232,7 @@ INSTALLED_APPS = [
     'users',
     'identity',
     'quality',
+    'collaboration',
     'organizations',
     'data_import',
     'data_export',
