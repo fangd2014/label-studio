@@ -1,4 +1,5 @@
 import { EnterpriseBadge, Select, Typography } from "@humansignal/ui";
+import { useAuth } from "@humansignal/core/providers/AuthProvider";
 import React from "react";
 import { useHistory } from "react-router";
 import { ToggleItems } from "../../components";
@@ -17,7 +18,20 @@ import { Input, TextArea } from "../../components/Form";
 import { FF_LSDV_E_297, isFF } from "../../utils/feature-flags";
 import { createURL } from "../../components/HeidiTips/utils";
 
-const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, setDescription, show = true }) =>
+const ProjectName = ({
+  name,
+  setName,
+  onSaveName,
+  onSubmit,
+  error,
+  description,
+  setDescription,
+  workspaceId,
+  setWorkspaceId,
+  workspaceLoading,
+  workspaceOptions,
+  show = true,
+}) =>
   !show ? null : (
     <form
       className={cn("project-name").toClassName()}
@@ -61,7 +75,14 @@ const ProjectName = ({ name, setName, onSaveName, onSubmit, error, description, 
             工作区
             <EnterpriseBadge className="ml-tight" />
           </label>
-          <Select placeholder="选择一个选项" disabled options={[]} triggerClassName="!flex-1" />
+          <Select
+            placeholder={workspaceOptions.length > 0 ? "选择一个选项" : "当前组织暂无工作区"}
+            disabled={workspaceLoading || workspaceOptions.length === 0}
+            options={workspaceOptions}
+            value={workspaceId}
+            onChange={setWorkspaceId}
+            triggerClassName="!flex-1"
+          />
           <Typography size="small" className="mt-tight mb-wider">
             通过将项目归类到工作区中，简化项目管理。{" "}
             <a
@@ -89,6 +110,7 @@ export const CreateProject = ({ onClose }) => {
   const [step, _setStep] = React.useState("name"); // name | import | config
   const [waiting, setWaitingStatus] = React.useState(false);
 
+  const { user } = useAuth();
   const { project, setProject: updateProject } = useDraftProject();
   const history = useHistory();
   const api = useAPI();
@@ -97,6 +119,11 @@ export const CreateProject = ({ onClose }) => {
   const [error, setError] = React.useState();
   const [description, setDescription] = React.useState("");
   const [sample, setSample] = React.useState(null);
+  const [workspaceOptions, setWorkspaceOptions] = React.useState([]);
+  const [workspaceLoading, setWorkspaceLoading] = React.useState(false);
+  const [workspaceId, setWorkspaceId] = React.useState();
+
+  const organizationId = user?.active_organization;
 
   const setStep = React.useCallback((step) => {
     _setStep(step);
@@ -111,6 +138,39 @@ export const CreateProject = ({ onClose }) => {
   React.useEffect(() => {
     setError(null);
   }, [name]);
+
+  React.useEffect(() => {
+    if (!isFF(FF_LSDV_E_297) || !organizationId) return;
+
+    let active = true;
+
+    const loadWorkspaces = async () => {
+      setWorkspaceLoading(true);
+      const result = await api.callApi("organizationWorkspaces", {
+        params: { pk: organizationId },
+      });
+      if (!active) return;
+
+      const workspaces = Array.isArray(result) ? result : [];
+      const options = workspaces.map((workspace) => ({
+        value: String(workspace.id),
+        label: workspace.is_default ? `${workspace.title}（默认）` : workspace.title,
+      }));
+      const defaultWorkspace = workspaces.find((workspace) => workspace.is_default) ?? workspaces[0];
+
+      setWorkspaceOptions(options);
+      if (!workspaceId && defaultWorkspace) {
+        setWorkspaceId(String(defaultWorkspace.id));
+      }
+      setWorkspaceLoading(false);
+    };
+
+    loadWorkspaces();
+
+    return () => {
+      active = false;
+    };
+  }, [api, organizationId, workspaceId]);
 
   const { columns, uploading, uploadDisabled, finishUpload, pageProps, uploadSample } = useImportPage(project, sample);
 
@@ -128,13 +188,29 @@ export const CreateProject = ({ onClose }) => {
     project && !name && setName(project.title);
   }, [project]);
 
+  React.useEffect(() => {
+    if (project?.workspace && !workspaceId) {
+      setWorkspaceId(String(project.workspace));
+    }
+  }, [project?.workspace, workspaceId]);
+
   const projectBody = React.useMemo(
-    () => ({
-      title: name,
-      description,
-      label_config: project?.label_config ?? "<View></View>",
-    }),
-    [name, description, project?.label_config],
+    () => {
+      const body = {
+        title: name,
+        description,
+        label_config: project?.label_config ?? "<View></View>",
+      };
+
+      if (workspaceId) {
+        body.workspace = Number(workspaceId);
+      } else if (project?.workspace) {
+        body.workspace = project.workspace;
+      }
+
+      return body;
+    },
+    [name, description, project?.label_config, project?.workspace, workspaceId],
   );
 
   const onCreate = React.useCallback(async () => {
@@ -226,6 +302,10 @@ export const CreateProject = ({ onClose }) => {
           onSubmit={onCreate}
           description={description}
           setDescription={setDescription}
+          workspaceId={workspaceId}
+          setWorkspaceId={setWorkspaceId}
+          workspaceLoading={workspaceLoading}
+          workspaceOptions={workspaceOptions}
           show={step === "name"}
         />
         <ImportPage
