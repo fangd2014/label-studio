@@ -265,8 +265,8 @@ class FileUpload(models.Model):
             # otherwise - only one object tag should be presented in label config
             elif not self.project.one_object_in_label_config:
                 raise ValidationError(
-                    'Your label config has more than one data key and direct file upload supports only '
-                    'one data key. To import data with multiple data keys, use a JSON or CSV file.'
+                    '当前标注配置包含多个数据键，直接上传单个文件仅支持一个数据键。'
+                    '如需导入包含多个数据键的数据，请使用 JSON 或 CSV 文件。'
                 )
 
             # file as a single asset
@@ -276,7 +276,7 @@ class FileUpload(models.Model):
                 tasks = self.read_task_from_uploaded_file()
 
         except Exception as exc:
-            raise ValidationError('Failed to parse input file ' + self.file_name + ': ' + extract_message(exc))
+            raise ValidationError('解析输入文件失败 ' + self.file_name + '：' + extract_message(exc))
         return tasks
 
     def read_tasks_streaming(self, file_as_tasks_list=True, batch_size=100):
@@ -300,8 +300,8 @@ class FileUpload(models.Model):
                     tasks = self.read_tasks_list_from_txt()
                 elif not self.project.one_object_in_label_config:
                     raise ValidationError(
-                        'Your label config has more than one data key and direct file upload supports only '
-                        'one data key. To import data with multiple data keys, use a JSON or CSV file.'
+                        '当前标注配置包含多个数据键，直接上传单个文件仅支持一个数据键。'
+                        '如需导入包含多个数据键的数据，请使用 JSON 或 CSV 文件。'
                     )
                 elif file_format in ('.html', '.htm', '.xml'):
                     tasks = self.read_task_from_hypertext_body()
@@ -314,7 +314,7 @@ class FileUpload(models.Model):
                     yield batch
 
         except Exception as exc:
-            raise ValidationError('Failed to parse input file ' + self.file_name + ': ' + extract_message(exc))
+            raise ValidationError('解析输入文件失败 ' + self.file_name + '：' + extract_message(exc))
 
     @classmethod
     def load_tasks_from_uploaded_files(

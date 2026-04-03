@@ -107,7 +107,7 @@ def custom_exception_handler(exc, context):
         'id': exception_id,
         'status_code': status.HTTP_500_INTERNAL_SERVER_ERROR,  # default value
         'version': label_studio.__version__,
-        'detail': 'Unknown error',  # default value
+        'detail': '未知错误',  # default value
         'exc_info': None,
     }
 
@@ -124,7 +124,7 @@ def custom_exception_handler(exc, context):
             response.data = response_data
         # move validation errors to separate namespace
         else:
-            response_data['detail'] = 'Validation error'
+            response_data['detail'] = '校验错误'
             response_data['validation_errors'] = (
                 response.data if isinstance(response.data, dict) else {'non_field_errors': response.data}
             )
