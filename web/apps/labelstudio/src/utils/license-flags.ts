@@ -1,7 +1,16 @@
 import { isFlagEnabled } from "@humansignal/core/lib/utils/helpers";
 
+function getLicenseFlagMap() {
+  return {
+    ...(window.APP_SETTINGS?.feature_flags ?? {}),
+    ...(window.APP_SETTINGS?.flags ?? {}),
+  };
+}
+
 export function isInLicense(id: string) {
-  return isFlagEnabled(id, window.APP_SETTINGS?.flags || {});
+  const defaultValue = window.APP_SETTINGS?.feature_flags_default_value === true;
+
+  return isFlagEnabled(id, getLicenseFlagMap(), defaultValue);
 }
 
 const ENTERPRISE_LICENSE_FLAGS = [
